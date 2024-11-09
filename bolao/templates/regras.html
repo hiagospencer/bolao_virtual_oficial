@@ -1,0 +1,70 @@
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Regras {% endblock%} {% block body %}
+
+    <section class="regras">
+        <div class="pontuacoes">
+            <h3>Pontuações dos Palpites</h3>
+
+            <div class="info_pontuacoes">
+                <h6>O usuário precisa está logado ao fim da rodada para computar os ponto.</h6>
+                <span><b>Placar Exato:</b> 3</span>
+                <p>Acertar o placar exato com os gols do vencedor e do perdedor ou empate.</p>
+                <span><b>Resultado do Jogo:</b> 2x1 ou 2x2 </span><br>
+                <span><b>Palpite:</b> 2x1 ou 2x2</span>
+            </div>
+
+
+            <div class="info_pontuacoes">
+                <span><b>Vencedor da Partida:</b> 2</span>
+                <p>Acertar o vencedor da partida, mas erra o número de gols do perdedor.</p>
+                <span><b>Resultado do Jogo:</b> 2x1</span><br>
+                <span><b>Palpite:</b> 2x0</span>
+            </div>
+
+            <div class="info_pontuacoes">
+                <span><b>Empate:</b> 2</span>
+                <p>Acertar o empate da partida, mas erra o número de gols.</p>
+                <span><b>Resultado do Jogo:</b> 2x2</span><br>
+                <span><b>Palpite:</b> 1x1</span>
+            </div>
+        </div>
+
+        <div class="pontuacoes">
+            <h3>Regulamento</h3>
+            <div class="info_pontuacoes">
+                <span><b>Como participar:</b></span>
+                <ul>
+                    <li>- O participante devera realizar o cadastro no sistema.</li>
+                    <li>- Pagar o valor de participação ao organizador (caso existir).</li>
+                    <li>- Realizado o cadastro e o pagamento (caso existir) o organizador irá adicionar o participante
+                        ao grupo do bolão com todos
+                        os outros participantes.</li>
+                </ul>
+            </div>
+
+            <div class="info_pontuacoes">
+                <span><b>Como funciona:</b></span>
+                <ul>
+                    <li>- Serão considerados todos os jogos da competição.</li>
+                    <li>- Cada jogo disputado recebe um palpite (quanto o participante imagina que será o placar final da partida)</li>
+                    <li>- Caso o participante não realize o palpite não receberá pontos para a partida não palpitada.</li>
+                    <li>- O 'Ranking Geral' exibe a classificação e pontos de todos os participantes.</li>
+                    <li>- As partidas serão bloquedas horas antes do 1º jogo da rodada.</li>
+                    <li>- Após todas as partidas disputadas o prêmio será entregue aos melhores colocados no 'Ranking Geral'</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pontuacoes">
+            <h3>Critérios de Desempate</h3>
+            <div class="info_pontuacoes">
+                <span><b>Desempate:</b></span>
+                <ul>
+                    <li>1º: Quantidades de Placares Exatos</li>
+                    <li>2º: Quantidades de Vitórias</li>
+                    <li>OBS: As partidas adiadas vão ser avaliadas.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

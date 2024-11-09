@@ -1,0 +1,50 @@
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Pagamento {% endblock%} {% block body %}
+
+<section class="regras" style="z-index: -1;">
+    <section class="section profile col-xl-10"></section>
+    <form action="{% url 'pagamento_bolao' %}" method="POST">{% csrf_token %}
+        <div class="container_checkout">
+            <div class="card_checkout cart_checkout">
+                <label class="title_checkout">Pagamento</label>
+                <div class="steps_checkout">
+                    <div class="step_checkout">
+                        <div>
+                            <span>Detalhes</span>
+                            <p>Usuario: {{usuario.usuario}}</p>
+                            <p>Email: {{usuario.email}}</p>
+                            {% if usuario.tipo_aposta == "por_rodada" %}
+                            <p>Formato bolão: Por rodada</p>
+                            <input type="hidden" name="tipo_aposta" value="por_rodada">
+                            <p>Valor: R$ 10,00</p>
+                            <input type="hidden" name="valor" value="10.00">
+                            {% elif usuario.tipo_aposta == "normal" %}
+                            <p>Formato bolão: normal</p>
+                            <input type="hidden" name="tipo_aposta" value="normal">
+                            <p>Valor: R$ 30,00</p>
+                            <input type="hidden" name="valor" value="30.00">
+                            {% endif %}
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card_checkout checkout_checkout">
+                <div class="footer_checkout">
+                    {% if usuario.tipo_aposta == "por_rodada" %}
+                    <label class="price_checkout">R$ 10,00</label>
+                    <button type="submit" class="checkout-btn_checkout">Finalizar</button>
+                    {% elif usuario.tipo_aposta == "normal" %}
+                    <label class="price_checkout">R$ 30,00</label>
+                    <button type="submit" class="checkout-btn_checkout">Finalizar</button>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+</section>
+
+
+{% endblock %}

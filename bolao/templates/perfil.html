@@ -1,0 +1,97 @@
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Perfil {% endblock%} {% block body %}
+
+<section class="regras" style="z-index: -1;">
+    <section class="section profile col-xl-10">
+        <div class="row">
+            <div class="col-xl-4">
+                {% for usuario in usuarios %}
+                <div class="card">
+                    <form method="POST" action="{% url 'perfil' %}" enctype='multipart/form-data'>
+                        {% csrf_token %}
+
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <img src="{{ usuario.imagem.url }}" alt="{{ usuario.nome}}" class="rounded-circle"
+                                width="100" height="100" id="image-preview" />
+                            <div class="input-group mt-2">
+                                <input type="file" class="form-control" name="img" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Imagem</label>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <button class="btn btn-primary" type="submit">
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">
+                                    Sobre
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2">
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                <h5 class="card-title">Detalhes Perfil</h5>
+                                <div class="row mt-2">
+                                    <div class="col-lg-3 col-md-4 label">Usuário</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <div class="form-control" type="text" name="usuario" id="nome"
+                                            style="cursor: not-allowed;">{{ usuario.usuario }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <div class="form-control" type="text" name="email" id="email"
+                                            style="cursor: not-allowed;">{{ usuario.email}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-lg-3 col-md-4 label">Whatsapp</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <div class="form-control" type="text" name="whatsapp" id="whatsapp"
+                                            style="cursor: not-allowed;">{{ usuario.whatsapp}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- End Bordered Tabs -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<script>
+
+    const imageInput = document.getElementById('inputGroupFile02');
+    const imagePreview = document.getElementById('image-preview');
+
+    imageInput.addEventListener('change', function () {
+        const file = this.files[ 0 ]
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    })
+
+</script>
+
+{% endblock %}

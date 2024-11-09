@@ -1,0 +1,718 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Afacad Flux", sans-serif;
+  text-decoration: none;
+}
+
+body,
+html {
+  background: #e9e9e9;
+}
+.active {
+  color: rgb(87, 87, 13) !important;
+}
+
+.sucesso {
+  border: 5px solid #1cf636;
+  box-shadow: 10px 7px 10px -3px rgba(54, 222, 29, 0.75);
+  -webkit-box-shadow: 10px 7px 10px -3px rgba(54, 222, 29, 0.75);
+  -moz-box-shadow: 10px 7px 10px -3px rgba(54, 222, 29, 0.75);
+}
+
+.erro {
+  border: 5px solid #ff2b18;
+  box-shadow: 10px 7px 10px -3px rgba(240, 68, 68, 0.75);
+  -webkit-box-shadow: 10px 7px 10px -3px rgba(240, 68, 68, 0.75);
+  -moz-box-shadow: 10px 7px 10px -3px rgba(240, 68, 68, 0.75);
+}
+
+header {
+  z-index: 999 !important;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 0 2%;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: rgb(87, 87, 13) !important;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #06aa50;
+  border-bottom: 2px solid #50e0a0;
+  height: 15vh;
+  z-index: 999 !important;
+}
+
+.logo {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 7vh;
+  margin-right: 8px;
+}
+
+.logo span {
+  font-size: 24px;
+  color: #fff;
+}
+.nav-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-list li {
+  letter-spacing: 3px;
+  margin-left: 32px;
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: #06aa50;
+  box-shadow: 0 0 2px black;
+  display: none;
+  transition: 0.4s;
+}
+
+.dropdown-menu a {
+  margin: 0 0 5px 10px;
+  display: block;
+  color: #fff;
+}
+
+.dropdown:hover .dropdown-menu {
+  transition: 0.4s;
+  display: block;
+}
+
+.nav-list li a i {
+  margin-right: 5px;
+}
+
+.mobile-menu {
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menu div {
+  width: 32px;
+  height: 2px;
+  background: #fff;
+  margin: 8px;
+  transition: 0.3s;
+}
+
+.login > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-decoration: none;
+  color: #333333;
+  font-size: 15px !important;
+  border-radius: 0px;
+  width: 85px;
+  height: 35px;
+  font-weight: bold;
+  border: 2px solid #333333;
+  transition: 0.3s;
+  box-shadow: 5px 5px 0px 0px rgba(51, 51, 51, 1);
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.login a i {
+  margin-right: 3px;
+}
+
+.login > a:hover {
+  box-shadow: 0 0 #333;
+  color: #fff !important;
+  background-color: #333;
+}
+
+/* ========================== fim do header ====================== */
+
+.informacao {
+  max-width: 1100px;
+  margin: 130px auto 60px auto;
+  background-color: #d1e7dd;
+  padding: 2%;
+}
+
+.container__info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.container__info h2 {
+  font-weight: 400;
+}
+
+.container__info > p {
+  color: #403f3f;
+  line-height: 1.3rem;
+  font-size: 17px;
+}
+
+.premiacoes {
+  background-color: #fff3cd;
+  padding: 1%;
+}
+
+.premiacoes h4 {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.premiacoes p {
+  color: #403f3f;
+  line-height: 1.3rem;
+  font-size: 17px;
+}
+
+.inscricao {
+  margin: 0 auto;
+}
+.inscricao > a {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  width: 210px;
+  height: 40px;
+  font-weight: bold;
+  border-bottom: 4px solid #179e43;
+  transition: 0.3s;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+  background-color: #19d256;
+  cursor: pointer;
+}
+
+.inscricao > a:hover {
+  box-shadow: 0 0 rgba(0, 0, 0, 0.4);
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+/* ========================== fim do informação ====================== */
+
+.container > h2 {
+  background-color: #f2f2f2;
+  margin-bottom: 5px;
+  padding: 8px 10px;
+  border: 1px solid #cecece;
+  font-weight: 500;
+  font-size: 27px;
+}
+.tabela {
+  background-color: #d1e7dd;
+  width: 100%;
+  overflow: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-size: 13px !important;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+.escudo {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+}
+
+/* ========================== fim da Classificação ====================== */
+
+.title__rodada {
+  margin: 130px auto 30px auto;
+  text-align: center;
+  text-transform: uppercase;
+  color: #06aa50;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.rodadas {
+  max-width: 950px;
+  display: flex;
+  flex-direction: column;
+  margin: 40px auto 250px auto;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 42px;
+  flex-direction: row;
+}
+
+.rodada {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 45%;
+  background-color: #fff;
+  padding: 25px 0;
+  border-radius: 7px;
+}
+
+.time_casa,
+.time_visitante {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.time_casa img,
+.time_visitante img {
+  width: 50px;
+}
+
+.info_rodada > span {
+  text-align: center;
+  display: block;
+  margin-bottom: 5px;
+  color: #595858;
+}
+
+.resultado_jogo {
+  margin: 0 30px;
+}
+.resultado_jogo input {
+  width: 40px;
+  height: 30px;
+  font-size: 18px;
+  padding-left: 5px;
+  outline: none;
+}
+
+.resultado_jogo input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.salvar button {
+  padding: 15px 25px;
+  border: unset;
+  border-radius: 15px;
+  color: #212121;
+  z-index: 1;
+  background: #fffdfd;
+  position: relative;
+  font-weight: 1000;
+  font-size: 17px;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+  overflow: hidden;
+}
+
+.salvar button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 15px;
+  background-color: #212121;
+  z-index: -1;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+}
+
+.salvar button:hover {
+  color: #e8e8e8;
+}
+
+.salvar button:hover::before {
+  width: 100%;
+}
+/* ========================== fim da página Palpites ====================== */
+
+.regras {
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 160px auto 210px auto;
+}
+
+.pontuacoes {
+  background-color: #fff;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.pontuacoes > h3 {
+  margin: 15px 0 0 10px;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #06aa50;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.info_pontuacoes {
+  padding: 3%;
+}
+
+.info_pontuacoes p {
+  color: #595555;
+}
+
+.info_pontuacoes ul li {
+  list-style: none;
+}
+
+/* ========================== fim da Página Regras ====================== */
+
+.configuracoes {
+  margin: 130px auto auto auto;
+  padding: 0 2%;
+}
+
+/* ========================== fim da Página Configurações ====================== */
+
+footer {
+  margin-top: 60px;
+  background-color: #959292;
+  text-align: center;
+  padding: 10px 0;
+}
+
+footer span {
+  color: #fff;
+  font-size: 19px;
+}
+
+footer a {
+  font-size: 19px;
+  font-weight: bold;
+  font-style: italic;
+  color: #2e2c2c;
+}
+
+/* ========================== fim do footer====================== */
+
+
+/* From Uiverse.io by R1SH4BH81 */
+/* Body */
+.container_checkout {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 0px;
+  margin: 0 auto;
+}
+
+hr {
+  height: 1px;
+  background-color: #2e2e2e; /* Dark gray line */
+  border: none;
+}
+
+.card_checkout {
+  width: 400px;
+  background: #1c1c1c; /* Dark background for a professional look */
+  box-shadow:
+    0px 187px 75px rgba(0, 0, 0, 0.01),
+    0px 105px 63px rgba(0, 0, 0, 0.05),
+    0px 47px 47px rgba(0, 0, 0, 0.09),
+    0px 12px 26px rgba(0, 0, 0, 0.1),
+    0px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.title_checkout {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-bottom: 1px solid #2e2e2e; /* Dark gray */
+  font-weight: 700;
+  font-size: 24px;
+  color: #ffffff; /* White text */
+}
+
+/* Cart */
+.cart_checkout {
+  border-radius: 19px 19px 0px 0px;
+}
+
+.cart_checkout .steps_checkout {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.cart_checkout .steps_checkout .step_checkout {
+  display: grid;
+  gap: 10px;
+}
+
+.cart_checkout .steps_checkout .step_checkout span {
+  font-size: 21px;
+  font-weight: 600;
+  color: #ffffff; /* White text */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.cart_checkout .steps_checkout .step_checkout p {
+  font-size: 19px;
+  font-weight: 600;
+  color: #bbbbbb; /* Light gray text */
+}
+
+/* Promo */
+.promo_checkout form {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  gap: 10px;
+  padding: 0px;
+}
+
+
+
+.checkout_checkout .footer_checkout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 20px;
+  background-color: #2e2e2e; /* Dark gray background */
+}
+
+.price_checkout {
+  font-size: 22px;
+  color: #ffffff; /* White text */
+  font-weight: 900;
+}
+
+.checkout_checkout .checkout-btn_checkout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 36px;
+  background: #555555; /* Medium gray button */
+  border-radius: 7px;
+  border: 1px solid #2e2e2e; /* Dark gray border */
+  color: #ffffff; /* White text */
+  font-size: 17px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.checkout_checkout .checkout-btn_checkout:hover {
+  background-color: #777777; /* Slightly lighter gray on hover */
+
+
+}
+/* ========================== Página pagamento ====================== */
+
+
+
+/* ========================== Responsivo ====================== */
+
+@media (max-width: 999px) {
+  body {
+    overflow-x: hidden;
+  }
+  .nav-list {
+    position: absolute;
+    top: 15vh;
+    right: 0;
+    width: 50vw;
+    height: 92vh;
+    background-color: #06aa50;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in;
+  }
+  .nav-list li {
+    margin-top: 40px;
+    margin-left: 0;
+    opacity: 0;
+  }
+
+  .dropdown {
+    z-index: 999999 !important;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    right: 0.2%;
+    background-color: #12c161;
+    box-shadow: 0 0 2px black;
+    display: none;
+    transition: 0.4s;
+  }
+
+  .dropdown-menu a {
+    margin: 0 0 5px 10px;
+    display: block;
+    color: #fff;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .informacao {
+    width: 96%;
+  }
+  .container {
+    width: 98%;
+  }
+
+  .tabela {
+    background-color: #d1e7dd;
+    width: 98%;
+    font-size: 15px;
+    overflow: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow: scroll;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .escudo {
+    width: 40px;
+    height: 40px;
+    margin-right: 7px;
+  }
+
+  .usuario {
+    padding: 13px 20px !important;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  td {
+    font-size: 14px !important;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    font-size: 14px !important;
+  }
+
+  .rodadas {
+    width: 96%;
+    gap: 22px;
+  }
+
+  .rodada {
+    width: 96%;
+  }
+
+  .pontuacoes {
+    width: 96%;
+  }
+}
+
+.nav-list.active {
+  transform: translateX(0);
+}
+
+@keyframes navLinkFade {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu.active .line1 {
+  transform: rotate(-45deg) translate(-8px, 8px);
+}
+
+.mobile-menu.active .line2 {
+  opacity: 0;
+}
+
+.mobile-menu.active .line3 {
+  transform: rotate(45deg) translate(-5px, -7px);
+}

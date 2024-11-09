@@ -1,0 +1,133 @@
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Configurações {% endblock%} {% block body %}
+
+<section class="configuracoes">
+    <h2>Configurações:</h2>
+    <form action="{% url 'configuracoes'%}" method="POST">
+        {% csrf_token %}
+        <div class="col-5 g-3">
+            <h4>Escolha a rodada para o usuário salvar os palpites: </h4><br>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger mt-2" role="alert">
+                    <span{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="col">
+                <input type="number" class="form-control" placeholder="Rodada Inicial" aria-label="First name" name="rodada_inicial">
+            </div>
+            <p>Selecione a rodada inicial e final, e ecolha entre o tipo aposta: Desbloquear partidas por rodadas ou Desbloquear
+                partidas normal</p>
+            <hr>
+            <div class="col">
+                <input type="number" class="form-control" placeholder="Rodada Final" aria-label="Last name" name="rodada_final">
+
+            </div>
+            <hr>
+            <div class="col mt-3">
+                <div class="col ">
+                    <input type="number" class="form-control" placeholder="Rodada Original" aria-label="Last name"
+                        name="rodada_original" style="width: 100% !important;">
+                </div>
+
+                <hr>
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="Apagar rodada" aria-label="Last name"
+                        name="apagar_rodada" style="width: 100% !important;">
+                </div>
+                <hr>
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="Criar rodada" aria-label="Last name" name="criar_rodadas"
+                        style="width: 100% !important;">
+                </div>
+                <hr>
+                <div class="col">
+                    <label for="rodada_atualizada_normal">Atualizar Classificação normal:</label>
+                    <input type="number" class="form-control" placeholder="Digite o numero da rodada para atualizar a classificação" aria-label="Last name" name="rodada_atualizada_normal" id="rodada_atualizada_normal"
+                        style="width: 100% !important;">
+                </div>
+
+
+                 <hr>
+                 <div class="col">
+                    <label for="rodada_atualizada_por_rodada">Atualizar Classificação por rodada:</label>
+                    <input type="number" class="form-control" placeholder="Digite o numero da rodada para atualizar a classificação" aria-label="Last name" name="rodada_atualizada_por_rodada" id="rodada_atualizada_por_rodada"
+                        style="width: 100% !important;">
+                </div>
+                <hr>
+
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="zerar palpites" aria-label="Last name" name="zerar_palpites"
+                        style="width: 100% !important;">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="resetar_pontuacao" name="resetar_pontuacao">
+                        <label class="form-check-label" for="resetar_pontuacao">
+                            Resetar pontuações usuários
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="bloquear_partidas_por_rodada" name="bloquear_partidas_por_rodada">
+                        <label class="form-check-label" for="bloquear_partidas_por_rodada">
+                            Bloquear partidas por rodadas
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="desbloquear_partidas_por_rodada" name="desbloquear_partidas_por_rodada">
+                        <label class="form-check-label" for="desbloquear_partidas_por_rodada">
+                            Desbloquear partidas por rodadas
+                        </label>
+                    </div>
+                </div>
+            </div><!-- Fim do bloqueio e desbloqueio de partidas por rodadas-->
+
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="bloquear_partidas_normal"
+                            name="bloquear_partidas_normal">
+                        <label class="form-check-label" for="bloquear_partidas_normal">
+                            Bloquear partidas normal
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="desbloquear_partidas_normal"
+                            name="desbloquear_partidas_normal">
+                        <label class="form-check-label" for="desbloquear_partidas_normal">
+                            Desbloquear partidas normal
+                        </label>
+                    </div>
+                </div>
+            </div><!-- Fim do bloqueio e desbloqueio de partidas por rodadas-->
+
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock %}

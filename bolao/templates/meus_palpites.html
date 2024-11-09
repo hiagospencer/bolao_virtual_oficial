@@ -1,0 +1,42 @@
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Palpites {% endblock%} {% block body %}
+
+<div class="title__rodada">
+    <h2 class="card-text">Meus Palpites </h2>
+    <hr>
+</div>
+
+
+<section class="rodadas">
+    <form action="{% url 'palpites' %}" method="POST">
+        {% csrf_token %}
+        {% for jogo in posts %}
+        <div class="rodada {{ jogo.tipo_class}}">
+            <div class="time_casa">
+                <img src="{{ jogo.imagem_casa }}" alt="{{ jogo.time_casa }}">
+                <span>{{ jogo.time_casa }}</span>
+                <input type="hidden" name="{{ jogo.time_casa }}" value="{{ jogo.time_casa }}" />
+            </div><!--tim_casa-->
+
+            <div class="info_rodada">
+                <span class="horario_rodada">Rodada: {{ jogo.rodada_atual }}</span>
+                <input type="hidden" name="rodada_atual" value="{{ jogo.rodada_atual }}" />
+                <div class="resultado_jogo">
+                    <input type="number" name="resultado_casa" id="placar" value="{{ jogo.placar_casa }}" disabled/>
+                    <span>X</span>
+                    <input type="number" name="resultado_visitante" value="{{ jogo.placar_visitante }}" id="placar"
+                        disabled />
+                </div>
+            </div><!--Rodada-->
+
+            <div class="time_visitante">
+                <img src="{{ jogo.imagem_fora }}" alt="{{ jogo.time_visitante }}">
+                <span>{{ jogo.time_visitante }}</span>
+                <input type="hidden" name="{{ jogo.time_visitante }}" value="{{ jogo.time_visitante }}" />
+            </div><!--Time_visitante-->
+
+        </div>
+        {% endfor %}
+    </form>
+        {% include 'auxiliar/pagination.html' %}
+</section>
+{% endblock %}
