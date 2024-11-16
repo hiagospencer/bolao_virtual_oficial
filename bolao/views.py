@@ -11,19 +11,20 @@ import pandas as pd
 
 from .models import *
 from .utils import *
-from .api_brasileirao import get_api_data
 from .api_mercadopago import criar_pagamento
 
 
 def homepage(request):
     if request.user.is_authenticated:
         tipo_aposta_usuario = Usuario.objects.get(usuario=request.user)
+        #TODO Retirar a tabela Pontuacacao e colocar a Classificacao
         usuarios = Classificacao.objects.filter(usuario__pagamento=True, usuario__tipo_aposta=tipo_aposta_usuario.tipo_aposta).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+        # Itera sobre a classificação e atribui as posições
 
         context = {'usuarios':usuarios}
         return render(request, 'index.html',context)
     else:
-        usuarios = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+        usuarios = Classificacao.objects.filter(usuario__pagamento=True, usuario__tipo_aposta="normal").order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
 
         context = {'usuarios':usuarios}
         return render(request, 'index.html',context)
@@ -126,6 +127,13 @@ def meus_palpites(request):
         return redirect('login_bolao')
 
 def regras(request):
+    user = request.user
+    palpites = Palpite.objects.filter(usuario=user,rodada_atual=5)
+    total_pontos_rodadas = []
+    for usuario in palpites:
+        total_pontos_rodadas.append(usuario.vitorias)
+        total_pontos_rodadas.append(usuario.placar_exato)
+    print(sum(total_pontos_rodadas))
     return render(request,'regras.html')
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -139,7 +147,8 @@ def configuracoes(request):
         apagar_rodada = request.POST.get('apagar_rodada')
         criar_rodadas = request.POST.get('criar_rodadas')
 
-        resetar_pontuacao = request.POST.get('resetar_pontuacao')
+        resetar_pontuacao_usuario_normal = request.POST.get('resetar_pontuacao')
+        resetar_pontuacao_usuario_rodada = request.POST.get('resetar_pontuacao_usuario_por_rodada')
         zerar_palpites = request.POST.get('zerar_palpites')
 
         bloquear_partidas_por_rodada = request.POST.get('bloquear_partidas_por_rodada')
@@ -172,8 +181,12 @@ def configuracoes(request):
         if apagar_rodada:
             RodadaOriginal.objects.filter(rodada_atual=apagar_rodada).delete()
 
-        if resetar_pontuacao:
-            thread = threading.Thread(target=resetar_pontuacao_usuarios())
+        if resetar_pontuacao_usuario_normal:
+            thread = threading.Thread(target=resetar_pontuacao_usuarios_normal())
+            thread.start()
+
+        if resetar_pontuacao_usuario_rodada:
+            thread = threading.Thread(target=resetar_pontuacao_usuario_por_rodada())
             thread.start()
 
         # Desbloquear e Bloquear as partidas dos usuario que estão no modo Por Rodada
@@ -270,7 +283,8 @@ def perfil(request):
 def pagamento_bolao(request):
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
-
+    bloquear = BloquearPartida.objects.get(id=1)
+    print(bloquear)
     if request.method == "POST":
         dados = request.POST.dict()
         formato_bolao = dados.get("tipo_aposta")
@@ -281,9 +295,9 @@ def pagamento_bolao(request):
         pagamento = Pagamento.objects.create(id_pagamento=id_pagamento)
         pagamento.save()
         return redirect(link_pagamento)
-    else:
-        context = {"usuario":usuario}
-        return render(request, "pagamento_bolao.html", context)
+
+    context = {"usuario":usuario, "bloquear":bloquear}
+    return render(request, "pagamento_bolao.html", context)
 
 
 def finalizar_pagamento(request):
@@ -322,11 +336,17 @@ def login_bolao(request):
 def cadastro(request):
 
     if request.method == 'POST':
-        nome = request.POST.get('nome')
+        nome_form = request.POST.get('nome')
+        nome = nome_form.strip()
+
         email = request.POST.get('email')
         whatsapp = request.POST.get('whatsapp')
-        senha = request.POST.get('senha')
-        confirme_senha = request.POST.get('confirme_senha')
+        senha_form = request.POST.get('senha')
+        senha = senha_form.strip()
+
+        confirme_senha_form = request.POST.get('confirme_senha')
+        confirme_senha = confirme_senha_form.strip()
+
         tipo_aposta = request.POST.get('tipo_aposta')
 
         if Usuario.objects.filter(nome=nome).exists():

@@ -1,8 +1,9 @@
 import mercadopago
+import os
 
 
 def criar_pagamento(valor,link_pagamento):
-	sdk = mercadopago.SDK("TEST-266656323447145-110719-a59531039b6a8f24597978bfc17a9381-162532150")
+	sdk = mercadopago.SDK(os.getenv("TOKEN_API_MERCADO_PAGO"))
 
 	request_options = mercadopago.config.RequestOptions()
 	request_options.custom_headers = {
@@ -17,10 +18,18 @@ def criar_pagamento(valor,link_pagamento):
 				"description": "Pagamento da inscrição do Bolão Virtual",
 				"quantity": 1,
 				"currency_id": "BRL",
-				"unit_price": float(valor),
+				"unit_price": 1,
 			},
 		],
   		"auto_return":"all",
+		"payment_methods": {
+            "excluded_payment_types": [
+                {"id": "ticket"},  # Exclui boleto bancário, por exemplo
+                {"id": "atm"}      # Exclui transferências bancárias
+            ],
+            "installments": 12,  # Limita o número máximo de parcelas no cartão
+            # "default_payment_method_id": "pix"  # Pode definir Pix como opção padrão
+        },
   		"back_urls": {
 			"success": link_pagamento,
 			"pending": link_pagamento,

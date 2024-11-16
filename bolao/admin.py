@@ -9,14 +9,16 @@ class UsuarioAdmin(admin.ModelAdmin):
     search_fields = ["usuario", "tipo_aposta", "pagamento"]
 
 class ClassificacaoAdmin(admin.ModelAdmin):
-    model = Usuario
-    list_display = ["usuario", "pontos"]
-    search_fields = ["usuario"]
+    model = Classificacao
+    list_display = ["usuario", "pontos",]
+    list_filter = ["usuario", "pontos",]
+    search_fields = ("usuario",)
+
 
 
 class PalpiteAdmin(admin.ModelAdmin):
     model = Palpite
-    list_display = ["usuario","rodada_atual","time_casa", "placar_casa", "placar_visitante",  "time_visitante", "vencedor", "finalizado", "tipo_class"]
+    list_display = ["usuario","rodada_atual","time_casa", "placar_casa", "placar_visitante",  "time_visitante", "vencedor","placar_exato","vitorias", "finalizado", "tipo_class"]
     list_filter = ["usuario", "rodada_atual"]
     list_per_page = 10
     search_fields = ("usuario", "rodada_atual")
@@ -27,7 +29,6 @@ class RodadaOriginalAdmin(admin.ModelAdmin):
     list_filter = ["rodada_atual"]
     list_per_page = 10
     search_fields = ("usuario", "rodada_atual")
-
 
 class RodadaAdmin(admin.ModelAdmin):
     model = Palpite

@@ -14,7 +14,7 @@ class Usuario(models.Model):
     tipo_aposta = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"Nome: {self.usuario} - Tipo aposta: {self.tipo_aposta}"
+        return f"{self.nome}"
 
 class Classificacao(models.Model):
     usuario = models.OneToOneField(Usuario, null=True, blank=True, on_delete=models.CASCADE)
@@ -22,10 +22,6 @@ class Classificacao(models.Model):
     placar_exato = models.IntegerField(default=0)
     vitorias = models.IntegerField(default=0)
     empates = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.usuario} - {self.pontos}"
-
 
 class Palpite(models.Model):
     usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -39,6 +35,8 @@ class Palpite(models.Model):
     vencedor = models.CharField(max_length=50)
     finalizado = models.BooleanField(default=False)
     tipo_class = models.CharField(max_length=50, default='none')
+    placar_exato = models.IntegerField(default=0)
+    vitorias = models.IntegerField(default=0)
 
 
     def save(self, *args, **kwargs):
@@ -101,7 +99,7 @@ class Rodada(models.Model):
 
 class Verificacao(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    verificado = models.BooleanField(default=False)
+    verificado = models.BooleanField(default=True)
     partida_atual = models.IntegerField(default=32)
     partida_final = models.IntegerField(default=39)
 
@@ -110,9 +108,12 @@ class Verificacao(models.Model):
 
 class BloquearPartida(models.Model):
     rodada_bloqueada = models.BooleanField(default=False)
+    bloquear_grafico = models.BooleanField(default=False)
+    bloquear_pagamento = models.BooleanField(default=False)
+
 
     def __str__(self):
-        return f'Rodadas bloqueadas: {self.rodada_bloqueada}'
+        return f'Rodadas bloqueadas: {self.rodada_bloqueada} - Graficos Bloqueados: {self.bloquear_grafico} - Pagamento: {self.bloquear_pagamento}'
 
 
 class Pagamento(models.Model):

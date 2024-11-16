@@ -14,7 +14,7 @@ urlpatterns = [
     path('pagamento-bolao', pagamento_bolao, name='pagamento_bolao'),
     path('finalizar-pagamento', finalizar_pagamento, name='finalizar_pagamento'),
 
-    path('login/', login_bolao, name='login_bolao'),
+    path('accounts/login/', login_bolao, name='login_bolao'),
     path('cadastro', cadastro, name='cadastro'),
     path('logout', fazer_logout, name='logout'),
 
@@ -28,7 +28,8 @@ urlpatterns = [
 ]
 
 htmx_urlpatterns = [
-    path("forma-bolao", forma_bolao, name="forma_bolao")
+    path("forma-bolao", forma_bolao, name="forma_bolao"),
+     path('usuario/<int:usuario_id>/detalhes/', detalhes_usuario, name='detalhes_usuario'),
 ]
 
 urlpatterns += htmx_urlpatterns

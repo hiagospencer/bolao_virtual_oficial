@@ -1,4 +1,5 @@
 import requests
+import os
 import json
 
 def get_api_data(rodada):
@@ -10,7 +11,7 @@ def get_api_data(rodada):
         Retorna o resultado dos jogos da rodada
     '''
     uri = f'https://api.football-data.org/v4/competitions/BSA/matches?matchday={rodada}'
-    headers = { 'X-Auth-Token': '77e912143e55450cab5e22d0ff600fd9' }
+    headers = { 'X-Auth-Token': os.getenv("TOKEN_API_BRASILEIRAO") }
 
     response = requests.get(uri, headers=headers)
     if response.status_code == 200:

@@ -1,4 +1,4 @@
-{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Ranking {% endblock%} {% block body %}
+{% extends 'auxiliar/base.html' %} {% load static %} {% block title %} Bolão | Ranking {% endblock%} {% block body %}{% load custom_filters %}
 
 
 <section class="informacao">
@@ -25,13 +25,11 @@
         {% if user.is_authenticated %}
 
         <div class="inscricao">
-            <!-- <button onclick="return sendToWhatSapp('{{request.user}}')">Clique aqui para participar</button> -->
             <a href="{% url 'palpites' %}">Criar palpites</a>
         </div>
 
         {% else %}
         <div class="inscricao">
-            <!-- <button onclick="return sendToWhatSapp('{{request.user}}')">Clique aqui para participar</button> -->
             <a href="{% url 'cadastro' %}">Clique aqui para participar</a>
         </div>
         {% endif %}
@@ -55,9 +53,16 @@
             <tbody>
 
                     {% for usuario in usuarios %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td class="usuario">
+                    <tr
+                        hx-get="{% url 'detalhes_usuario' usuario.id %}"
+                        hx-target="#modal-content"
+                        hx-trigger="click"
+                        data-bs-toggle="modal"
+                        data-bs-target="#usuarioModal">
+                        <td>
+                             {{ forloop.counter }}
+                        </td>
+                        <td class="usuario" style="cursor: pointer;">
                             <img src="{{ usuario.usuario.avatar.url }}" alt="{{ usuario.usuario.nome }}" class="escudo">
                             {{ usuario.usuario.nome}}
                         </td>
@@ -70,26 +75,19 @@
         </table>
     </div>
 </section>
+    <dialog id="usuarioModal">
+        <div id="modal-content">
+            <!-- Os detalhes do usuário serão carregados aqui -->
+            {% include 'htmx/detalhes_usuario.html' %}
+        </div>
+        <button onclick="document.getElementById('usuarioModal').close()">X</button>
+    </dialog>
 
-
-<script>
-    const sendToWhatSapp = (nome) => {
-
-        const numeroDestino = "+5584988638467";
-        const mensagem =
-            "Olá, gostaria de participar do Bolão do Brasileirão!";
-
-        const url =
-            "https://wa.me/" +
-            numeroDestino +
-            "?text=" +
-            mensagem +
-            "%0a%0a" +
-            "Nome: " +
-            nome;
-
-        window.open(url, "_blank").focus();
-
-    };
-</script>
+    <script>
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('click', () => {
+                document.getElementById('usuarioModal').showModal();
+            });
+        });
+    </script>
 {% endblock %}

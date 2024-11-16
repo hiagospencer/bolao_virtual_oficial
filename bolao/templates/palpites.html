@@ -52,15 +52,15 @@
         {% endfor %}
 
         {% if user.is_authenticated %}
-        {% if not verificacao_partida %}
-        <div class="salvar">
-            <button type="submit">Salvar Palpites</button>
-        </div>
-        {% else %}
-        <div class="alert alert-warning mt-2" role="alert">
-            <span style="cursor: not-allowed;">Rodadas Bloqueadas <i class="fa-solid fa-lock"></i></span>
-        </div>
-        {% endif %}
+            {% if not verificacao_partida %}
+            <div class="salvar">
+                <button type="submit">Salvar Palpites</button>
+            </div>
+            {% else %}
+            <div class="alert alert-warning mt-2" role="alert">
+                <span style="cursor: not-allowed;">Rodadas Bloqueadas.<i class="fa-solid fa-lock"></i></span>
+            </div>
+            {% endif %}
 
         {% else %}
         <div class="btn btn-info">

@@ -1,0 +1,59 @@
+{% if bloquear.bloquear_grafico %}
+<!-- <p>Alguns participantes ainda não tem jogos salvos.
+        Espere o ADM desbloquear o gráfico!
+    </p> -->
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            <p style="color: #181818; font-size: 17px;">Alguns participantes ainda não tem jogos salvos.
+                Espere o ADM desbloquear o gráfico!
+            </p>
+        </div>
+    </div>
+{% else %}
+    <div class="grafico-container">
+        <div id="columnchart_material" class="grafico"></div>
+    </div>
+{% endif %}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': [ 'bar' ] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        const dadosJSON = JSON.parse('{{ dados_json|safe }}');
+
+        const dadosGrafico = [ [ 'Rodada', '{{ usuarios.nome }}', '{{ adversarios.nome }}' ] ];
+        for (let i = 0; i < dadosJSON.rodadas.length; i++) {
+            dadosGrafico.push([
+                'Rodada ' + dadosJSON.rodadas[ i ],  // Nome da rodada
+                dadosJSON.pontos_usuario[ i ],               // Pontos do Usuário
+                dadosJSON.pontos_adversario[ i ]             // Pontos do Adversário
+            ]);
+        }
+
+        var data = google.visualization.arrayToDataTable(dadosGrafico);
+
+        var options = {
+            chart: {
+                title: 'Progresso de Pontuação dos Usuários por Rodada',
+                subtitle: 'Bolão do Brasileirão',
+            }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+</script>
+
+<!-- <script>
+    const Alerta = () => {
+        alert("Adversario ainda não tem palpites salvos")
+    }
+</script> -->

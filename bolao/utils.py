@@ -79,6 +79,9 @@ def calcular_pontuacao(user):
 
   try:
     for rodada in rodadas:
+      print("Rodadas vitorias")
+      rodada.vitorias += 2
+      print(rodada.vitorias)
       try:
         resultado_original = RodadaOriginal.objects.get(rodada_atual=rodada.rodada_atual, time_casa=rodada.time_casa,time_visitante=rodada.time_visitante)
 
@@ -87,6 +90,7 @@ def calcular_pontuacao(user):
         if (rodada.vencedor == resultado_original.vencedor):
           pontuacao_usuario.pontos += 2
           pontuacao_usuario.vitorias += 1
+          rodada.vitorias += 2
           rodada.tipo_class = "sucesso"
           rodada.finalizado = True
           pontuacao_usuario.save()
@@ -100,6 +104,7 @@ def calcular_pontuacao(user):
             rodada.placar_visitante == resultado_original.placar_visitante):
           pontuacao_usuario.pontos += 3
           pontuacao_usuario.placar_exato += 1
+          rodada.placar_exato += 3
           rodada.finalizado = True
           pontuacao_usuario.save()
 
@@ -125,14 +130,11 @@ def calcular_pontuacao(user):
 def calcular_pontuacao_usuario(rodada_atualizada, tipo_aposta):
   todos_usuarios = Usuario.objects.filter(tipo_aposta=tipo_aposta)
   try:
-
     for usuario in todos_usuarios:
-      print(usuario)
       rodadas = Palpite.objects.filter(finalizado=False, usuario=usuario.usuario, rodada_atual=rodada_atualizada)
       pontuacao_usuario = Classificacao.objects.get(usuario__usuario=usuario.usuario)
-
+      print("iniciando")
       for rodada in rodadas:
-        #TODO verificar pq não ta pontuando
         try:
           resultado_original = RodadaOriginal.objects.get(rodada_atual=rodada.rodada_atual, time_casa=rodada.time_casa,time_visitante=rodada.time_visitante)
 
@@ -140,6 +142,7 @@ def calcular_pontuacao_usuario(rodada_atualizada, tipo_aposta):
           if (rodada.vencedor == resultado_original.vencedor):
             pontuacao_usuario.pontos += 2
             pontuacao_usuario.vitorias += 1
+            rodada.vitorias = 2
             rodada.tipo_class = "sucesso"
             rodada.finalizado = True
             pontuacao_usuario.save()
@@ -153,6 +156,7 @@ def calcular_pontuacao_usuario(rodada_atualizada, tipo_aposta):
               rodada.placar_visitante == resultado_original.placar_visitante):
             pontuacao_usuario.pontos += 3
             pontuacao_usuario.placar_exato += 1
+            rodada.placar_exato = 3
             rodada.finalizado = True
             pontuacao_usuario.save()
 
@@ -176,26 +180,39 @@ def calcular_pontuacao_usuario(rodada_atualizada, tipo_aposta):
 
 
 
-
-
-def resetar_pontuacao_usuarios():
-  usuarios = Classificacao.objects.all()
-  palpites = Palpite.objects.all()
-  jogadores = Usuario.objects.all()
-
+def resetar_pontuacao_usuarios_normal():
+  '''
+  Filtrar todos os usuários com o tipo aposta "normal", colocar o pagamento de todos os usuários em "False" e zera todos os pontos da classificação.
+  '''
+  usuarios = Usuario.objects.filter(tipo_aposta="normal")
   for usuario in usuarios:
-    usuario.pontos = 0
-    usuario.placar_exato = 0
-    usuario.vitorias = 0
+    usuario.pagamento = False
     usuario.save()
 
-  for palpite in palpites:
-    palpite.finalizado = False
-    palpite.save()
+    pontuacoes = Classificacao.objects.filter(usuario=usuario)
+    for pontuacao in pontuacoes:
+      pontuacao.pontos = 0
+      pontuacao.placar_exato = 0
+      pontuacao.vitorias = 0
+      pontuacao.save()
 
-  for jogador in jogadores:
-    jogador.pagamento = False
-    jogador.save()
+def resetar_pontuacao_usuario_por_rodada():
+  '''
+  Filtrar todos os usuários com o tipo aposta "por rodada", colocar o pagamento de todos os usuários em "False" e zera todos os pontos da classificação.
+  '''
+  usuarios = Usuario.objects.filter(tipo_aposta="por_rodada")
+  for usuario in usuarios:
+    usuario.pagamento = False
+    usuario.save()
+
+    pontuacoes = Classificacao.objects.filter(usuario=usuario)
+    for pontuacao in pontuacoes:
+      pontuacao.pontos = 0
+      pontuacao.placar_exato = 0
+      pontuacao.vitorias = 0
+      pontuacao.save()
+
+
 
 
 def salvar_rodada_original(rodada_original):
@@ -270,4 +287,14 @@ def zerar_palpites_usuarios(rodada):
 
   for palpite in palpites:
     palpite.finalizado = False
+    palpite.tipo_class = 'none'
     palpite.save()
+
+
+def remover_repetidos(lista):
+    nova_lista = []
+    for elemento in lista:
+        if elemento not in nova_lista:
+            nova_lista.append(elemento)
+    nova_lista.sort()
+    return nova_lista
