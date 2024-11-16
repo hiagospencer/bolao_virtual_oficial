@@ -22,6 +22,10 @@ class Classificacao(models.Model):
     placar_exato = models.IntegerField(default=0)
     vitorias = models.IntegerField(default=0)
     empates = models.IntegerField(default=0)
+    posicao_atual = models.IntegerField(null=True, blank=True)
+    posicao_anterior = models.IntegerField(null=True, blank=True)
+    posicao_variacao = models.IntegerField(null=True, blank=True)
+
 
 class Palpite(models.Model):
     usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)

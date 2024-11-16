@@ -127,8 +127,8 @@ def calcular_pontuacao(user):
     print('tabela pontuação não encontrada')
 
 
-def calcular_pontuacao_usuario(rodada_atualizada, tipo_aposta):
-  todos_usuarios = Usuario.objects.filter(tipo_aposta=tipo_aposta)
+def calcular_pontuacao_usuario(rodada_atualizada):
+  todos_usuarios = Usuario.objects.all()
   try:
     for usuario in todos_usuarios:
       rodadas = Palpite.objects.filter(finalizado=False, usuario=usuario.usuario, rodada_atual=rodada_atualizada)
@@ -184,35 +184,21 @@ def resetar_pontuacao_usuarios_normal():
   '''
   Filtrar todos os usuários com o tipo aposta "normal", colocar o pagamento de todos os usuários em "False" e zera todos os pontos da classificação.
   '''
-  usuarios = Usuario.objects.filter(tipo_aposta="normal")
+  pontuacoes = Classificacao.objects.all()
+  for pontuacao in pontuacoes:
+    pontuacao.pontos = 0
+    pontuacao.placar_exato = 0
+    pontuacao.vitorias = 0
+    pontuacao.posicao_atual = None
+    pontuacao.posicao_anterior = None
+    pontuacao.posicao_variacao = None
+    pontuacao.save()
+
+def resetar_pagamento():
+  usuarios = Usuario.objects.all()
   for usuario in usuarios:
     usuario.pagamento = False
     usuario.save()
-
-    pontuacoes = Classificacao.objects.filter(usuario=usuario)
-    for pontuacao in pontuacoes:
-      pontuacao.pontos = 0
-      pontuacao.placar_exato = 0
-      pontuacao.vitorias = 0
-      pontuacao.save()
-
-def resetar_pontuacao_usuario_por_rodada():
-  '''
-  Filtrar todos os usuários com o tipo aposta "por rodada", colocar o pagamento de todos os usuários em "False" e zera todos os pontos da classificação.
-  '''
-  usuarios = Usuario.objects.filter(tipo_aposta="por_rodada")
-  for usuario in usuarios:
-    usuario.pagamento = False
-    usuario.save()
-
-    pontuacoes = Classificacao.objects.filter(usuario=usuario)
-    for pontuacao in pontuacoes:
-      pontuacao.pontos = 0
-      pontuacao.placar_exato = 0
-      pontuacao.vitorias = 0
-      pontuacao.save()
-
-
 
 
 def salvar_rodada_original(rodada_original):

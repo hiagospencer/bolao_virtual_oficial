@@ -45,6 +45,10 @@
                 <tr>
                     <th><i class="fa-solid fa-ranking-star"></i></th>
                     <th></th>
+                    <th><div class="variacoes">
+                        <i class="fa-solid fa-up-long" style="color: #12c161;"></i>
+                        <i class="fa-solid fa-down-long" style="color: rgb(228, 43, 43);"></i>
+                    </div></th>
                     <th>PONTOS</th>
                     <th>PLACAR EXATO</th>
                     <th>VITÓRIA</th>
@@ -66,6 +70,10 @@
                             <img src="{{ usuario.usuario.avatar.url }}" alt="{{ usuario.usuario.nome }}" class="escudo">
                             {{ usuario.usuario.nome}}
                         </td>
+                        <td>
+                                {% if usuario.posicao_variacao > 0 %}
+                                <i class="fa-solid fa-up-long" style="color: #12c161;"></i> {{ usuario.posicao_variacao }} posição{{ usuario.posicao_variacao|pluralize }}
+                                {% elif usuario.posicao_variacao < 0 %} <i class="fa-solid fa-down-long" style="color: rgb(228, 43, 43);"></i> {{ usuario.posicao_variacao|absolute }} posição{{ usuario.posicao_variacao|absolute|pluralize }} {% else %}<i class="fa-solid fa-minus"></i> {% endif %} </td>
                         <td>{{ usuario.pontos }}</td>
                         <td>{{ usuario.placar_exato }}</td>
                         <td>{{ usuario.vitorias }}</td>

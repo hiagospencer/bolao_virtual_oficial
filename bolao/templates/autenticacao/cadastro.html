@@ -55,22 +55,6 @@
                 <div class="senha">
                     <input type="password" placeholder="Confirme a senha" name="confirme_senha" />
                 </div>
-
-                <div class="senha">
-                    <select name="tipo_aposta" id="tipo_aposta"
-                        hx-get="{% url 'forma_bolao' %}"
-                        hx-trigger="click"
-                        hx-target="#result">
-                        <option selected disabled>Como você quer participar?</option>
-                        <option value="normal">Normal</option>
-                        <option value="por_rodada">Por Rodada</option>
-                    </select>
-                </div>
-
-                <div id="result" class="mt-1" style="max-width: 500px; padding: 0 2%;">
-
-                </div>
-
                 <div class="entrar">
                     <p>Já tem uma conta? <a href="{% url 'login_bolao' %}">Clique aqui.</a></p>
                     <input type="submit" value="Criar">

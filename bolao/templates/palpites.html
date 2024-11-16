@@ -54,7 +54,7 @@
         {% if user.is_authenticated %}
             {% if not verificacao_partida %}
             <div class="salvar">
-                <button type="submit">Salvar Palpites</button>
+                <button type="submit" onclick="showSuccessAlert()">Salvar Palpites</button>
             </div>
             {% else %}
             <div class="alert alert-warning mt-2" role="alert">
@@ -69,5 +69,16 @@
         {% endif %}
     </form>
 </section>
+
+<script>
+    function showSuccessAlert() {
+        Swal.fire({
+            title: 'Sucesso!',
+            text: 'Rodada salva com sucesso.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        })
+    }
+</script>
 
 {% endblock %}

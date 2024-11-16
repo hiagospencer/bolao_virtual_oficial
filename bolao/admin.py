@@ -10,7 +10,7 @@ class UsuarioAdmin(admin.ModelAdmin):
 
 class ClassificacaoAdmin(admin.ModelAdmin):
     model = Classificacao
-    list_display = ["usuario", "pontos",]
+    list_display = ["usuario", "pontos","posicao_atual", "posicao_anterior", "posicao_variacao"]
     list_filter = ["usuario", "pontos",]
     search_fields = ("usuario",)
 

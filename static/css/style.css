@@ -36,6 +36,12 @@ html {
   font-weight: bold;
 }
 
+.up {
+  font-weight: 900;
+  font-size: 19px;
+  color: #12c161 !important;
+}
+
 dialog#usuarioModal {
   width: 90%;
   height: 80%;

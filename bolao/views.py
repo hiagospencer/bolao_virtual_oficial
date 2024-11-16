@@ -16,15 +16,14 @@ from .api_mercadopago import criar_pagamento
 
 def homepage(request):
     if request.user.is_authenticated:
-        tipo_aposta_usuario = Usuario.objects.get(usuario=request.user)
         #TODO Retirar a tabela Pontuacacao e colocar a Classificacao
-        usuarios = Classificacao.objects.filter(usuario__pagamento=True, usuario__tipo_aposta=tipo_aposta_usuario.tipo_aposta).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+        usuarios = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
         # Itera sobre a classificação e atribui as posições
 
         context = {'usuarios':usuarios}
         return render(request, 'index.html',context)
     else:
-        usuarios = Classificacao.objects.filter(usuario__pagamento=True, usuario__tipo_aposta="normal").order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+        usuarios = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
 
         context = {'usuarios':usuarios}
         return render(request, 'index.html',context)
@@ -148,31 +147,43 @@ def configuracoes(request):
         criar_rodadas = request.POST.get('criar_rodadas')
 
         resetar_pontuacao_usuario_normal = request.POST.get('resetar_pontuacao')
-        resetar_pontuacao_usuario_rodada = request.POST.get('resetar_pontuacao_usuario_por_rodada')
-        zerar_palpites = request.POST.get('zerar_palpites')
 
-        bloquear_partidas_por_rodada = request.POST.get('bloquear_partidas_por_rodada')
-        desbloquear_partidas_por_rodada = request.POST.get('desbloquear_partidas_por_rodada')
+        zerar_palpites = request.POST.get('zerar_palpites')
 
         bloquear_partidas_normal = request.POST.get('bloquear_partidas_normal')
         desbloquear_partidas_normal = request.POST.get('desbloquear_partidas_normal')
 
-        rodada_atualizada_por_rodada = request.POST.get('rodada_atualizada_por_rodada')
         rodada_atualizada_normal = request.POST.get('rodada_atualizada_normal')
+
+        resetar_pagamento_usuario = request.POST.get('resetar_pagamento')
 
         if zerar_palpites:
             thread = threading.Thread(target=zerar_palpites_usuarios(zerar_palpites))
             thread.start()
 
-        # Atualizar classificação normal passando o número da rodada e o tipo_aposta do usuário
-        if rodada_atualizada_normal:
-            thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal, "normal"))
+        if resetar_pagamento_usuario:
+            thread = threading.Thread(target=resetar_pagamento())
             thread.start()
 
-        # Atualizar classificação por rodada passando o número da rodada e o tipo_aposta do usuário
-        if rodada_atualizada_por_rodada:
-            thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_por_rodada, "por_rodada"))
+        # Atualizar classificação normal passando o número da rodada e o tipo_aposta do usuário
+        if rodada_atualizada_normal:
+            classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+            thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal))
             thread.start()
+
+            for index, item in enumerate(classificacao, start=1):
+
+                # Salva a posição anterior
+                item.posicao_anterior = item.posicao_atual
+                # Atualiza a posição atual
+                item.posicao_atual = index
+                # Calcula a variação de posição (subiu ou desceu)
+                if item.posicao_anterior is not None:
+                    item.posicao_variacao = item.posicao_anterior - item.posicao_atual
+                else:
+                    item.posicao_variacao = 0  # Nenhuma variação se não há posição anterior
+                item.save()
+
 
         if rodada_original:
             thread = threading.Thread(target=salvar_rodada_original(rodada_original))
@@ -185,44 +196,19 @@ def configuracoes(request):
             thread = threading.Thread(target=resetar_pontuacao_usuarios_normal())
             thread.start()
 
-        if resetar_pontuacao_usuario_rodada:
-            thread = threading.Thread(target=resetar_pontuacao_usuario_por_rodada())
-            thread.start()
 
-        # Desbloquear e Bloquear as partidas dos usuario que estão no modo Por Rodada
-        if bloquear_partidas_por_rodada:
-            usuarios = Usuario.objects.filter(tipo_aposta="por_rodada")
-            for usuario in usuarios:
-                bloquear = Verificacao.objects.filter(user=usuario.usuario)
-                for partida in bloquear:
-                    partida.verificado = True
-                    partida.save()
-
-        if desbloquear_partidas_por_rodada:
-            usuarios = Usuario.objects.filter(tipo_aposta="por_rodada")
-            for usuario in usuarios:
-                bloquear = Verificacao.objects.filter(user=usuario.usuario)
-                for partida in bloquear:
-                    partida.verificado = False
-                    partida.save()
-
-        #TODO criar a verificação das partidas
         # Desbloquear e Bloquear as partidas dos usuario que estão no modo Normal
         if bloquear_partidas_normal:
-            usuarios = Usuario.objects.filter(tipo_aposta="normal")
-            for usuario in usuarios:
-                bloquear = Verificacao.objects.filter(user=usuario.usuario)
-                for partida in bloquear:
-                    partida.verificado = True
-                    partida.save()
+            bloquear = Verificacao.objects.all()
+            for partida in bloquear:
+                partida.verificado = True
+                partida.save()
 
         if desbloquear_partidas_normal:
-            usuarios = Usuario.objects.filter(tipo_aposta="normal")
-            for usuario in usuarios:
-                bloquear = Verificacao.objects.filter(user=usuario.usuario)
-                for partida in bloquear:
-                    partida.verificado = False
-                    partida.save()
+            bloquear = Verificacao.objects.all()
+            for partida in bloquear:
+                partida.verificado = False
+                partida.save()
 
 
         if criar_rodadas:
@@ -245,14 +231,6 @@ def configuracoes(request):
                 return redirect('configuracoes')
             else:
                 setar_rodadaAtual_rodadaFinal(rodada_inicial, rodada_final,"normal")
-                print('Rodadas setadas!')
-
-        elif rodada_inicial and rodada_final and desbloquear_partidas_por_rodada:
-            if int(rodada_inicial) >= int(rodada_final) or int(rodada_final) > 39:
-                messages.error(request, 'A rodada inicial não pode ser maior ou igual que a rodada final. Rodada final não poede ser maior que 38')
-                return redirect('configuracoes')
-            else:
-                setar_rodadaAtual_rodadaFinal(rodada_inicial, rodada_final,"por_rodada")
                 print('Rodadas setadas!')
         else:
             messages.error(request, 'Campos rodadas vazios!')
