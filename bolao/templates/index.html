@@ -36,6 +36,24 @@
     </div>
 </section>
 
+<div>
+    {% if user.is_authenticated %}
+        {% if not participante.usuario.pagamento == True or  participante.posicao_atual == None %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    showDetails(`Bem vindo, <b>{{participante.usuario.nome}}</b>.`);
+                });
+            </script>
+        {% else %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    showDetails(`Bem vindo, <b>{{participante.usuario.nome}}</b>. Posição atual: <b>{{ participante.posicao_atual }}º lugar</b>`);
+                });
+            </script>
+        {% endif %}
+    {% endif %}
+</div>
+
 
 <section class="container">
     <h2>Classificação</h2>
@@ -72,8 +90,9 @@
                         </td>
                         <td>
                                 {% if usuario.posicao_variacao > 0 %}
-                                <i class="fa-solid fa-up-long" style="color: #12c161;"></i> {{ usuario.posicao_variacao }} posição{{ usuario.posicao_variacao|pluralize }}
-                                {% elif usuario.posicao_variacao < 0 %} <i class="fa-solid fa-down-long" style="color: rgb(228, 43, 43);"></i> {{ usuario.posicao_variacao|absolute }} posição{{ usuario.posicao_variacao|absolute|pluralize }} {% else %}<i class="fa-solid fa-minus"></i> {% endif %} </td>
+                                <i class="fa-solid fa-up-long" style="color: #12c161;"></i> {{ usuario.posicao_variacao }}
+                                {% elif usuario.posicao_variacao < 0 %} <i class="fa-solid fa-down-long" style="color: rgb(228, 43, 43);"></i> {{ usuario.posicao_variacao|absolute }}
+                                 {% else %}<i class="fa-solid fa-minus"></i> {% endif %} </td>
                         <td>{{ usuario.pontos }}</td>
                         <td>{{ usuario.placar_exato }}</td>
                         <td>{{ usuario.vitorias }}</td>
@@ -92,6 +111,26 @@
     </dialog>
 
     <script>
+        const showDetails = (mensagem) => {
+                Swal.fire({
+                    title: mensagem,
+                    showClass: {
+                        popup: `
+                            animate__animated
+                            animate__fadeInUp
+                            animate__faster
+                            `
+                    },
+                    hideClass: {
+                        popup: `
+                            animate__animated
+                            animate__fadeOutDown
+                            animate__faster
+                            `
+                    }
+                });
+            }
+
         document.querySelectorAll('tr').forEach(row => {
             row.addEventListener('click', () => {
                 document.getElementById('usuarioModal').showModal();

@@ -8,10 +8,12 @@
 
 body,
 html {
-  background: #e9e9e9;
+  /* background: #e9e9e9; */
+  background-image: url('../img/campo.jpg');
 }
 .active {
-  color: rgb(87, 87, 13) !important;
+  color: #00d119!important;
+
 }
 
 .sucesso {
@@ -98,7 +100,7 @@ a {
 }
 
 a:hover {
-  color: rgb(87, 87, 13) !important;
+  color: rgb(13, 207, 29) !important;
 }
 
 .header {
@@ -108,7 +110,7 @@ a:hover {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #06aa50;
+  background-color: #232878;
   border-bottom: 2px solid #50e0a0;
   height: 15vh;
   z-index: 999 !important;
@@ -145,7 +147,7 @@ a:hover {
 
 .dropdown-menu {
   position: absolute;
-  background-color: #06aa50;
+  background-color: #232878;
   box-shadow: 0 0 2px black;
   display: none;
   transition: 0.4s;
@@ -344,7 +346,11 @@ tr:hover {
   margin: 130px auto 30px auto;
   text-align: center;
   text-transform: uppercase;
-  color: #06aa50;
+  color: #292929;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -489,7 +495,9 @@ form {
 
 .configuracoes {
   margin: 130px auto auto auto;
-  padding: 0 2%;
+  width: 70%;
+  padding: 2%;
+  background-color: #fff;
 }
 
 /* ========================== fim da Página Configurações ====================== */
@@ -742,7 +750,7 @@ hr {
     right: 0;
     width: 50vw;
     height: 92vh;
-    background-color: #06aa50;
+    background-color: #232878;
     flex-direction: column;
     align-items: center;
     transform: translateX(100%);
@@ -761,7 +769,7 @@ hr {
   .dropdown-menu {
     position: absolute;
     right: 0.2%;
-    background-color: #12c161;
+    background-color: #232878;
     box-shadow: 0 0 2px black;
     display: none;
     transition: 0.4s;

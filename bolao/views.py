@@ -16,11 +16,12 @@ from .api_mercadopago import criar_pagamento
 
 def homepage(request):
     if request.user.is_authenticated:
-        #TODO Retirar a tabela Pontuacacao e colocar a Classificacao
+        user = request.user
+        participante = Classificacao.objects.get(usuario__usuario=user)
         usuarios = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
         # Itera sobre a classificação e atribui as posições
 
-        context = {'usuarios':usuarios}
+        context = {'usuarios':usuarios, "participante":participante}
         return render(request, 'index.html',context)
     else:
         usuarios = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
