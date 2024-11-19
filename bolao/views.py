@@ -227,12 +227,12 @@ def configuracoes(request):
 
 
         # Pegando a rodada inicial, final e qual o tipo da aposta do usuario para desbloquear as partidas
-        if rodada_inicial and rodada_final and desbloquear_partidas_normal:
+        if rodada_inicial and rodada_final:
             if int(rodada_inicial) >= int(rodada_final) or int(rodada_final) > 39:
                 messages.error(request, 'A rodada inicial não pode ser maior ou igual que a rodada final. Rodada final não poede ser maior que 38')
                 return redirect('configuracoes')
             else:
-                setar_rodadaAtual_rodadaFinal(rodada_inicial, rodada_final,"normal")
+                setar_rodadaAtual_rodadaFinal(rodada_inicial, rodada_final)
                 print('Rodadas setadas!')
         else:
             messages.error(request, 'Campos rodadas vazios!')

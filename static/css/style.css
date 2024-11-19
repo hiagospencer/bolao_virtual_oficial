@@ -496,7 +496,7 @@ form {
 
 .configuracoes {
   margin: 130px auto auto auto;
-  width: 70%;
+  width: 80%;
   padding: 2%;
   background-color: #fff;
 }
@@ -845,6 +845,10 @@ hr {
 
   .pontuacoes {
     width: 96%;
+  }
+
+  .configuracoes{
+    width: 90% !important;
   }
 }
 

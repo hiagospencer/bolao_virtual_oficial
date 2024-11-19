@@ -142,7 +142,7 @@ def calcular_pontuacao_usuario(rodada_atualizada):
           if rodada.vencedor == "empate" and resultado_original.vencedor == 'empate':
             pontuacao_usuario.empates += 1
             pontuacao_usuario.save()
-            
+
           # Verifica se os placares coincidem
           if (rodada.vencedor == resultado_original.vencedor):
             pontuacao_usuario.pontos += 2
@@ -248,7 +248,7 @@ def salvar_rodada_original(rodada_original):
 
 
 
-def setar_rodadaAtual_rodadaFinal(rodada_atual, rodada_final, tipo_aposta):
+def setar_rodadaAtual_rodadaFinal(rodada_atual, rodada_final):
   '''
     Retorna todos os dados dos usuarios atualizado para rodada atual e rodada final.
 
@@ -256,20 +256,13 @@ def setar_rodadaAtual_rodadaFinal(rodada_atual, rodada_final, tipo_aposta):
       1º argumento: Qual a rodada inicial
       2º argumento: Qual a rodada final
   '''
-  usuarios = Usuario.objects.filter(tipo_aposta=tipo_aposta)
+  usuarios = Usuario.objects.all()
   for usuario in usuarios:
     bloquear = Verificacao.objects.filter(user=usuario.usuario)
     for partida in bloquear:
         partida.partida_atual = rodada_atual
         partida.partida_final = rodada_final
         partida.save()
-
-  # usuario_verificado = Verificacao.objects.all()
-  # for usuario in usuario_verificado:
-  #   usuario.partida_atual = rodada_atual
-  #   usuario.partida_final = rodada_final
-  #   usuario.verificado = False
-  #   usuario.save()
 
 
 def zerar_palpites_usuarios(rodada):

@@ -4,7 +4,7 @@
     <h2>Configurações:</h2>
     <form action="{% url 'configuracoes'%}" method="POST">
         {% csrf_token %}
-        <div class="col-5 g-3">
+        <div class="col g-3">
             <h4>Escolha a rodada para o usuário salvar os palpites: </h4><br>
 
             {% if messages %}
