@@ -4,7 +4,7 @@ from .models import *
 
 class UsuarioAdmin(admin.ModelAdmin):
     model = Usuario
-    list_display = ["usuario", "email", "whatsapp", "tipo_aposta", "pagamento"]
+    list_display = ["usuario", "email", "whatsapp", "pagamento"]
     list_per_page = 30
     search_fields = ["usuario", "tipo_aposta", "pagamento"]
 

@@ -3,6 +3,7 @@ import datetime
 import pytz
 import pandas as pd
 import time
+from django.core.mail import send_mail
 
 from .models import *
 from .api_brasileirao import *
@@ -138,6 +139,10 @@ def calcular_pontuacao_usuario(rodada_atualizada):
         try:
           resultado_original = RodadaOriginal.objects.get(rodada_atual=rodada.rodada_atual, time_casa=rodada.time_casa,time_visitante=rodada.time_visitante)
 
+          if rodada.vencedor == "empate" and resultado_original.vencedor == 'empate':
+            pontuacao_usuario.empates += 1
+            pontuacao_usuario.save()
+            
           # Verifica se os placares coincidem
           if (rodada.vencedor == resultado_original.vencedor):
             pontuacao_usuario.pontos += 2
@@ -284,3 +289,13 @@ def remover_repetidos(lista):
             nova_lista.append(elemento)
     nova_lista.sort()
     return nova_lista
+
+
+def enviar_email(email):
+  destinatario = email
+  assunto = f"Inscrição realizada com sucesso!"
+  corpo = f"""Parabéns! Sua inscrição no bolão virtual foi realizada com sucesso.
+  Agora você pode criar seus palpites e ver seu progresso no ranking geral.
+  """
+  remetente = "hiaguinhospencer@gmail.com"
+  send_mail(assunto,corpo,remetente,[destinatario])

@@ -11,7 +11,6 @@ class Usuario(models.Model):
     pagamento = models.BooleanField(default=False)
     imagem = models.ImageField(upload_to='imagens', default='imagens/perfil-null.png')
     avatar = models.ImageField(upload_to='thumb_img', default='imagens/perfil-null.png')
-    tipo_aposta = models.CharField(max_length=30)
 
     def __str__(self):
         return f"{self.nome}"

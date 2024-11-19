@@ -8,16 +8,15 @@
         </div>
     {% else %}
         <h4 class="title mt-1">Finalize o pagamento da inscrição para poder participar do bolão</h4>
+        <span>Para pagamentos via PIX, enviar o comprovante para: <a href="https://wa.me/5584988638467" target="_blank" rel="noopener noreferrer" style="color: rgb(35, 85, 192); font-weight: 900;">(84) 9 8863-8467</a></span>
         <form action="{% url 'pagamento_bolao' %}" method="POST">{% csrf_token %}
             {% if usuario.pagamento %}
             <div class="container_checkout">
                 <div class="alert alert-success" role="alert">
                     <h4 class="alert-heading">Pagamento feito!</h4>
-                    <p>Agora o usuário, <b>{{ usuario.nome }},</b> pode verificar seu progresso no ranking e participar do
+                    <p>Agora o usuário, <b>{{ usuario.nome }}</b> pode verificar seu progresso no ranking e participar do
                         bolão.</p>
                     <hr>
-                    <p class="mb-0">Para continuar participando, espere o final do bolão para efetuar o pagamento da
-                        inscrição.</p>
                 </div>
             </div>
 
@@ -31,17 +30,10 @@
                                 <span>Detalhes</span>
                                 <p><b>Usuario:</b> {{usuario.usuario}}</p>
                                 <p><b>Email:</b> {{usuario.email}}</p>
-                                {% if usuario.tipo_aposta == "por_rodada" %}
-                                <p><b>Formato bolão:</b> Por rodada</p>
-                                <input type="hidden" name="tipo_aposta" value="por_rodada">
-                                <p><b>Valor:</b> R$ 10,00</p>
-                                <input type="hidden" name="valor" value="10.00">
-                                {% elif usuario.tipo_aposta == "normal" %}
                                 <p><b>Formato bolão:</b> normal</p>
                                 <input type="hidden" name="tipo_aposta" value="normal">
                                 <p><b>Valor:</b> R$ 30,00</p>
                                 <input type="hidden" name="valor" value="30.00">
-                                {% endif %}
                             </div>
                             <hr />
                         </div>
@@ -50,14 +42,8 @@
 
                 <div class="card_checkout checkout_checkout">
                     <div class="footer_checkout">
-                        {% if usuario.tipo_aposta == "por_rodada" %}
-                        <label class="price_checkout">R$ 10,00</label>
-                        <button type="submit" class="checkout-btn_checkout">Finalizar</button>
-                        {% elif usuario.tipo_aposta == "normal" %}
                         <label class="price_checkout">R$ 30,00</label>
                         <button type="submit" class="checkout-btn_checkout">Finalizar</button>
-                        {% endif %}
-
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import user_passes_test
 import pandas as pd
+from django.core.mail import send_mail
 
 from .models import *
 from .utils import *
@@ -263,7 +264,6 @@ def pagamento_bolao(request):
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
     bloquear = BloquearPartida.objects.get(id=1)
-    print(bloquear)
     if request.method == "POST":
         dados = request.POST.dict()
         formato_bolao = dados.get("tipo_aposta")
@@ -289,9 +289,11 @@ def finalizar_pagamento(request):
         pagamento = Pagamento.objects.get(id_pagamento=id_pagamento)
         pagamento.aprovado = True
         usuario = Usuario.objects.get(usuario=user)
+        email = usuario.email
         usuario.pagamento = True
         usuario.save()
         pagamento.save()
+        enviar_email(email)
     return redirect("homepage")
 
 def login_bolao(request):
@@ -326,7 +328,6 @@ def cadastro(request):
         confirme_senha_form = request.POST.get('confirme_senha')
         confirme_senha = confirme_senha_form.strip()
 
-        tipo_aposta = request.POST.get('tipo_aposta')
 
         if Usuario.objects.filter(nome=nome).exists():
             messages.error(request, 'Já existe um usuário cadastrado com esse nome.')
@@ -348,21 +349,24 @@ def cadastro(request):
             messages.error(request, 'Número inválido! Tente novamente.')
             return redirect('cadastro')
 
-        if tipo_aposta:
-            print(f"Tipo da aposta: {tipo_aposta}")
-        else:
-            messages.error(request, 'Selecione uma forma de como participar do bolão virtual')
-            return redirect('cadastro')
         try:
             # Criar o usuário do Django
             user = User.objects.create_user(username=nome, email=email, password=senha)
 
             # Criar o objeto Usuario e associar o campo 'usuario' com o usuário logado
-            usuario = Usuario.objects.create(usuario=user,nome=nome,email=email, whatsapp=whatsapp, tipo_aposta=tipo_aposta)
+            usuario = Usuario.objects.create(usuario=user,nome=nome,email=email, whatsapp=whatsapp)
 
             # Criar o objeto Classificacao e associar ao Usuario criado
             classificacao = Classificacao.objects.create(usuario=usuario)
-
+            destinatario = 'hiaguinhospencer@gmail.com'
+            assunto = f"Novo cadastro no site Bolão Virtual!"
+            corpo = f"""
+            Nome: {nome}
+            Email: {email}
+            Whatsapp: {whatsapp}
+            """
+            remetente = "hiagosouzadev10@gmail.com"
+            send_mail(assunto,corpo,remetente,[destinatario])
             login(request, user)  # Faz o login automático após o cadastro
             return redirect('homepage')
         except Exception as e:

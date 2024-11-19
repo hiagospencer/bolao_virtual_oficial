@@ -41,13 +41,13 @@
         {% if not participante.usuario.pagamento == True or  participante.posicao_atual == None %}
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    showDetails(`Bem vindo, <b>{{participante.usuario.nome}}</b>.`);
+                    showDetails(`Bem vindo de volta, <b>{{participante.usuario.nome}}</b>.`);
                 });
             </script>
         {% else %}
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    showDetails(`Bem vindo, <b>{{participante.usuario.nome}}</b>. Posição atual: <b>{{ participante.posicao_atual }}º lugar</b>`);
+                    showDetails(`Bem vindo de volta, <b>{{participante.usuario.nome}}</b>. Posição atual: <b>{{ participante.posicao_atual }}º lugar</b>`);
                 });
             </script>
         {% endif %}
@@ -70,6 +70,7 @@
                     <th>PONTOS</th>
                     <th>PLACAR EXATO</th>
                     <th>VITÓRIA</th>
+                    <th>EMPATE</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,6 +97,7 @@
                         <td>{{ usuario.pontos }}</td>
                         <td>{{ usuario.placar_exato }}</td>
                         <td>{{ usuario.vitorias }}</td>
+                        <td>{{ usuario.empates }}</td>
                     </tr>
                     {% endfor %}
             </tbody>
