@@ -266,11 +266,8 @@ def pagamento_bolao(request):
     bloquear = BloquearPartida.objects.get(id=1)
     if request.method == "POST":
         dados = request.POST.dict()
-        formato_bolao = dados.get("tipo_aposta")
-        valor = dados.get("valor")
         link =request.build_absolute_uri(reverse("finalizar_pagamento"))
-        link_pagamento, id_pagamento = criar_pagamento(valor,link)
-        #TODO Criar a tabela pagamento e atribuir o id_pagamento a ela aqui
+        link_pagamento, id_pagamento = criar_pagamento(link)
         pagamento = Pagamento.objects.create(id_pagamento=id_pagamento)
         pagamento.save()
         return redirect(link_pagamento)
