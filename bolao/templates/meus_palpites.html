@@ -9,6 +9,7 @@
 <section class="rodadas">
     <form action="{% url 'palpites' %}" method="POST">
         {% csrf_token %}
+
         {% for jogo in posts %}
         <div class="rodada {{ jogo.tipo_class}}">
             <div class="time_casa">
@@ -37,6 +38,22 @@
         </div>
         {% endfor %}
     </form>
+    <div class="informacoes_palpites">
+        <div class="colors">
+            <div class="cor" style="background-color: #eef82a"></div>
+            <span>Placar Exato</span>
+        </div>
+
+        <div class="colors">
+            <div class="cor" style="background-color: #1cf636;"></div>
+            <span>Vitória</span>
+        </div>
+
+        <div class="colors">
+            <div class="cor" style="background-color: #ff2b18;"></div>
+            <span>Errado</span>
+        </div>
+    </div>
         {% include 'auxiliar/pagination.html' %}
 </section>
 

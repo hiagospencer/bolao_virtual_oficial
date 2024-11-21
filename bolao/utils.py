@@ -162,6 +162,7 @@ def calcular_pontuacao_usuario(rodada_atualizada):
             pontuacao_usuario.pontos += 3
             pontuacao_usuario.placar_exato += 1
             rodada.placar_exato = 3
+            rodada.tipo_class = "placar_exato"
             rodada.finalizado = True
             pontuacao_usuario.save()
 
