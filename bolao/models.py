@@ -9,8 +9,8 @@ class Usuario(models.Model):
     email = models.CharField(max_length=200, null=True, blank=True, unique=True)
     whatsapp = models.CharField(max_length=200, null=True, blank=True, unique=True)
     pagamento = models.BooleanField(default=False)
-    imagem = models.ImageField(upload_to='imagens', default='imagens/perfil-null.png')
-    avatar = models.ImageField(upload_to='thumb_img', default='imagens/perfil-null.png')
+    imagem = models.ImageField( default='perfil-null.png')
+    avatar = models.ImageField(default='perfil-null.png')
 
     def __str__(self):
         return f"{self.nome}"

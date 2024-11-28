@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from .models import *
 from .utils import *
 from .api_mercadopago import criar_pagamento
+from .tasks import *
 
 
 def homepage(request):
@@ -170,8 +171,10 @@ def configuracoes(request):
         # Atualizar classificação normal passando o número da rodada e o tipo_aposta do usuário
         if rodada_atualizada_normal:
             classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
-            thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal))
-            thread.start()
+            # thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal))
+            # thread.start()
+
+            calcular_pontuacao_usuario_tasks.delay(rodada_atualizada_normal)
 
             for index, item in enumerate(classificacao, start=1):
 
@@ -218,8 +221,8 @@ def configuracoes(request):
                 messages.error(request, 'Rodadas campeonato já foram criadas!')
                 return redirect('configuracoes')
             else:
-                thread = threading.Thread(target=criar_rodadas_campeonato())
-                thread.start()
+                criar_rodadas_campeonato_tasks.delay()
+
                 print("Rodadas Criadas com sucesso!")
 
         else:
