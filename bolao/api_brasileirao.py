@@ -5,7 +5,7 @@ import json
 def get_api_data(rodada):
     '''
     Args:
-        Recebe como argumento o número da Rodada do campeonato Brasileiro
+        Recebe como argumento o número da Rodada do campeonato  84981760693
 
     Return:
         Retorna o resultado dos jogos da rodada

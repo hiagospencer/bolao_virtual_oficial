@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import user_passes_test
 import pandas as pd
 from django.core.mail import send_mail
+from django.utils.timezone import now
 
 from .models import *
 from .utils import *
@@ -271,7 +272,7 @@ def pagamento_bolao(request):
         dados = request.POST.dict()
         link =request.build_absolute_uri(reverse("finalizar_pagamento"))
         link_pagamento, id_pagamento = criar_pagamento(link)
-        pagamento = Pagamento.objects.create(id_pagamento=id_pagamento)
+        pagamento,criado = Pagamento.objects.get_or_create(participante=user,id_pagamento=id_pagamento)
         pagamento.save()
         return redirect(link_pagamento)
 
@@ -281,21 +282,38 @@ def pagamento_bolao(request):
 
 def finalizar_pagamento(request):
     user = request.user
-
+    print("Finalizar pagamento")
     dados = request.GET.dict()
     status = dados.get("status")
+    print(dados)
     id_pagamento = dados.get("preference_id")
     if status == "approved":
-        pagamento = Pagamento.objects.get(id_pagamento=id_pagamento)
+        pagamento = Pagamento.objects.get(participante=user,id_pagamento=id_pagamento)
+        desbloquear_rodadas = Verificacao.objects.get(user=user)
+        desbloquear_rodadas.verificado = False
         pagamento.aprovado = True
+        pagamento.status = "aprovado"
+        pagamento.data_pagamento = now()
         usuario = Usuario.objects.get(usuario=user)
         email = usuario.email
         usuario.pagamento = True
         usuario.save()
         pagamento.save()
+        desbloquear_rodadas.save()
         enviar_email(email)
+    elif status == 'rejected':
+        pagamento = Pagamento.objects.get(participante=user,id_pagamento=id_pagamento)
+        pagamento.aprovado = False
+        pagamento.status = "rejeitado"
+        pagamento.data_pagamento = now()
+    elif status == 'pending':
+        pagamento = Pagamento.objects.get(participante=user,id_pagamento=id_pagamento)
+        pagamento.aprovado = False
+        pagamento.status = "pendente"
+        pagamento.data_pagamento = now()
+    else:
+        print("Fim do pagamento")
     return redirect("homepage")
-
 def login_bolao(request):
     if request.user.is_authenticated:
         return redirect('homepage')

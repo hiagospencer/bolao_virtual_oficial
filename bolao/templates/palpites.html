@@ -12,7 +12,7 @@
         {% for jogo in rodadas %}
         <div class="rodada">
             <div class="time_casa">
-                <img src="{{ jogo.imagem_casa }}" alt="{{ jogo.time_caasa }}">
+                <img src="{{ jogo.imagem_casa.url }}" alt="{{ jogo.time_casa }}" height="50">
                 <span>{{ jogo.time_casa }}</span>
                 <input type="hidden" name="{{ jogo.time_casa }}" value="{{ jogo.time_casa }}" />
             </div>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="time_visitante">
-                <img src="{{ jogo.imagem_fora }}" alt="{{ jogo.time_visitante }}">
+                <img src="{{ jogo.imagem_fora.url }}" alt="{{ jogo.time_visitante }}" height="50">
                 <span>{{ jogo.time_visitante }}</span>
                 <input type="hidden" name="{{ jogo.time_visitante }}" value="{{ jogo.time_visitante }}" />
             </div>

@@ -18,7 +18,7 @@ class ClassificacaoAdmin(admin.ModelAdmin):
 
 class PalpiteAdmin(admin.ModelAdmin):
     model = Palpite
-    list_display = ["usuario","rodada_atual","time_casa", "placar_casa", "placar_visitante",  "time_visitante", "vencedor","placar_exato","vitorias", "finalizado", "tipo_class"]
+    list_display = ["usuario","rodada_atual","time_casa", "placar_casa", "placar_visitante", "time_visitante", "vencedor","placar_exato","vitorias", "finalizado", "tipo_class"]
     list_filter = ["usuario", "rodada_atual"]
     list_per_page = 10
     search_fields = ("usuario", "rodada_atual")
@@ -45,9 +45,8 @@ class VerificacaoAdmin(admin.ModelAdmin):
 
 class PagamentoAdmin(admin.ModelAdmin):
     model = Pagamento
-    list_display = ["id_pagamento","aprovado",]
-    list_display = ["id_pagamento","aprovado",]
-    search_fields = ("id_pagamento", "aprovado")
+    list_display = ["participante","status","data_pagamento"]
+    search_fields = ("participante", "status","data_pagamento")
 
 
 admin.site.register(Usuario, UsuarioAdmin)

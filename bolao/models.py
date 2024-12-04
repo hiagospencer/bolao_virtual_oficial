@@ -83,14 +83,14 @@ class RodadaOriginal(models.Model):
     def __str__(self):
         return f"{self.time_casa} x {self.time_visitante}"
 
-
+0
 
 class Rodada(models.Model):
     rodada_atual = models.IntegerField(default=1)
     time_casa = models.CharField(max_length=50)
-    placar_casa = models.CharField(max_length=50)
+    placar_casa = models.CharField(null=True, blank=True)
     time_visitante = models.CharField(max_length=50)
-    placar_visitante = models.CharField(max_length=50)
+    placar_visitante = models.CharField(null=True, blank=True)
     imagem_casa = models.ImageField(upload_to='emblemas_times')
     imagem_fora = models.ImageField(upload_to='emblemas_times')
     preenchido = models.BooleanField(default=False)
@@ -103,7 +103,7 @@ class Rodada(models.Model):
 class Verificacao(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     verificado = models.BooleanField(default=True)
-    partida_atual = models.IntegerField(default=32)
+    partida_atual = models.IntegerField(default=1)
     partida_final = models.IntegerField(default=39)
 
     def __str__(self):
@@ -120,8 +120,20 @@ class BloquearPartida(models.Model):
 
 
 class Pagamento(models.Model):
+    participante = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     id_pagamento = models.CharField(max_length=400)
     aprovado = models.BooleanField(default=False)
+    data_pagamento = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('pendente', 'Pendente'),
+            ('aprovado', 'Aprovado'),
+            ('rejeitado', 'Rejeitado'),
+        ],
+        default='pendente',
+    )
+
 
     def __str__(self):
-        return f"Status: {self.aprovado}"
+        return f"Usuario: {self.participante} | Status: {self.status}"
