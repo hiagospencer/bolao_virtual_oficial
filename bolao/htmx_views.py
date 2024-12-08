@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import *
 from .utils import remover_repetidos
+import boto3
+from botocore.exceptions import NoCredentialsError
+
+
 
 def forma_bolao(request):
     forma_normal = '''

@@ -25,7 +25,6 @@ class Classificacao(models.Model):
     posicao_anterior = models.IntegerField(null=True, blank=True)
     posicao_variacao = models.IntegerField(null=True, blank=True)
 
-
 class Palpite(models.Model):
     usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     rodada_atual = models.IntegerField(default=1)
@@ -41,7 +40,6 @@ class Palpite(models.Model):
     placar_exato = models.IntegerField(default=0)
     vitorias = models.IntegerField(default=0)
 
-
     def save(self, *args, **kwargs):
         if self.placar_casa > self.placar_visitante:
             self.vencedor = self.time_casa
@@ -51,7 +49,6 @@ class Palpite(models.Model):
             self.vencedor = 'empate'
 
         super().save(*args, **kwargs)
-
 
     def __str__(self):
         return f"{self.time_casa} x {self.time_visitante}"
@@ -79,11 +76,8 @@ class RodadaOriginal(models.Model):
 
         super().save(*args, **kwargs)
 
-
     def __str__(self):
         return f"{self.time_casa} x {self.time_visitante}"
-
-0
 
 class Rodada(models.Model):
     rodada_atual = models.IntegerField(default=1)
@@ -95,10 +89,8 @@ class Rodada(models.Model):
     imagem_fora = models.ImageField(upload_to='emblemas_times')
     preenchido = models.BooleanField(default=False)
 
-
     def __str__(self):
         return f"{self.time_casa} x {self.time_visitante}"
-
 
 class Verificacao(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -114,10 +106,8 @@ class BloquearPartida(models.Model):
     bloquear_grafico = models.BooleanField(default=False)
     bloquear_pagamento = models.BooleanField(default=False)
 
-
     def __str__(self):
         return f'Rodadas bloqueadas: {self.rodada_bloqueada} - Graficos Bloqueados: {self.bloquear_grafico} - Pagamento: {self.bloquear_pagamento}'
-
 
 class Pagamento(models.Model):
     participante = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -133,7 +123,6 @@ class Pagamento(models.Model):
         ],
         default='pendente',
     )
-
 
     def __str__(self):
         return f"Usuario: {self.participante} | Status: {self.status}"

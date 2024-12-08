@@ -4,7 +4,14 @@ from decouple import config
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
 from .jazzmin import JAZZMIN_SETTINGS
+import boto3
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import logging
 
+
+logging.basicConfig(level=logging.DEBUG)
+boto3.set_stream_logger('botocore', level='DEBUG')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,6 +27,44 @@ MESSAGE_TAGS = {
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Mantém loggers padrão do Django
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        # Logger principal da AWS (boto3 e django-storages)
+        'botocore': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Pode ser alterado para INFO, WARNING, etc.
+            'propagate': False,
+        },
+        'boto3': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'storages': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 
 
 # SECURE_SSL_REDIRECT = False
@@ -42,7 +87,7 @@ CSRF_COOKIE_SECURE = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -57,8 +102,40 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bolao',
+
+    'storages',
     "django_celery_results",
 ]
+
+# Configuração do Amazon S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+AWS_ACCESS_KEY_ID = 'AKIAUQBULMPWL5S3W2HE'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'bucket-bolao-virtual-upload'
+AWS_S3_REGION_NAME = 'us-east-1'
+
+# URLs de arquivos
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
+# s3 = boto3.client('s3')
+# response = s3.upload_fileobj(
+#     Fileobj=open('teste.txt', 'rb'),
+#     Bucket='bucket-bolao-virtual-upload',
+#     Key='teste_log.txt'
+# )
+# print(response)
+
+# file = ContentFile(b"Testando upload com django-storages")
+# file_name = default_storage.save("teste_storage_aws.txt", file)
+# print(file_name)
+
 
 # Configurações do Celery
 CELERY_BROKER_URL = "amqp://user:password@rabbitmq:5672//"
@@ -170,7 +247,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

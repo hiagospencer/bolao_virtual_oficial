@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from .models import *
 from .api_brasileirao import *
 
+
 def validar_senha(senha, confirmar_senha):
   """Valida se a senha atende aos critérios de segurança e se as senhas coincidem.
       A senha deve ter pelo menos 8 caracteres, uma letra maiúscula e um número.
@@ -25,7 +26,6 @@ def validar_senha(senha, confirmar_senha):
 
   # Verifica se a senha corresponde à expressão regular e se as senhas coincidem
   return re.match(regex, senha) is not None and senha == confirmar_senha
-
 
 def criar_rodadas_campeonato():
 
@@ -66,7 +66,6 @@ def criar_rodadas_campeonato():
     print(f'Rodada {contador} criada!')
     contador += 1  # Incrementa o contador em 1 a cada iteração
     time.sleep(5)
-
 
 def calcular_pontuacao(user):
   '''
@@ -127,7 +126,6 @@ def calcular_pontuacao(user):
   except:
     print('tabela pontuação não encontrada')
 
-
 def calcular_pontuacao_usuario(rodada_atualizada):
   todos_usuarios = Usuario.objects.all()
   try:
@@ -138,11 +136,9 @@ def calcular_pontuacao_usuario(rodada_atualizada):
       for rodada in rodadas:
         try:
           resultado_original = RodadaOriginal.objects.get(rodada_atual=rodada.rodada_atual, time_casa=rodada.time_casa,time_visitante=rodada.time_visitante)
-
           if rodada.vencedor == "empate" and resultado_original.vencedor == 'empate':
             pontuacao_usuario.empates += 1
             pontuacao_usuario.save()
-
           # Verifica se os placares coincidem
           if (rodada.vencedor == resultado_original.vencedor):
             pontuacao_usuario.pontos += 2
@@ -151,11 +147,9 @@ def calcular_pontuacao_usuario(rodada_atualizada):
             rodada.tipo_class = "sucesso"
             rodada.finalizado = True
             pontuacao_usuario.save()
-
           else:
             rodada.tipo_class = "erro"
             rodada.finalizado = True
-
           # verifica os placares exatos
           if (rodada.placar_casa == resultado_original.placar_casa and
               rodada.placar_visitante == resultado_original.placar_visitante):
@@ -165,11 +159,9 @@ def calcular_pontuacao_usuario(rodada_atualizada):
             rodada.tipo_class = "placar_exato"
             rodada.finalizado = True
             pontuacao_usuario.save()
-
           else:
             print("Resultados não exatos")  # Atribui 0 se os resultados não forem iguais
             rodada.finalizado = True
-
           # Verificando quais os jogos que não foram realizados
           if resultado_original.placar_casa == 9999 and resultado_original.placar_visitante == 9999:
             rodada.finalizado = False
@@ -184,8 +176,6 @@ def calcular_pontuacao_usuario(rodada_atualizada):
   except:
     print('tabela pontuação não encontrada')
 
-
-
 def resetar_pontuacao_usuarios_normal():
   '''
   Filtrar todos os usuários com o tipo aposta "normal", colocar o pagamento de todos os usuários em "False" e zera todos os pontos da classificação.
@@ -195,6 +185,7 @@ def resetar_pontuacao_usuarios_normal():
     pontuacao.pontos = 0
     pontuacao.placar_exato = 0
     pontuacao.vitorias = 0
+    pontuacao.empates = 0
     pontuacao.posicao_atual = None
     pontuacao.posicao_anterior = None
     pontuacao.posicao_variacao = None
@@ -206,9 +197,7 @@ def resetar_pagamento():
     usuario.pagamento = False
     usuario.save()
 
-
 def salvar_rodada_original(rodada_original):
-
   dados = get_api_data(rodada_original)
   time_casa = []
   placar_casa = []
@@ -223,11 +212,9 @@ def salvar_rodada_original(rodada_original):
     else:
       placar_casa.append(jogo['score']['fullTime']['home'])
       placar_visitante.append(jogo['score']['fullTime']['away'])
-
     time_casa.append(jogo['homeTeam']['shortName'])
     time_visitante.append(jogo['awayTeam']['shortName'])
     rodada.append(jogo['matchday'])
-
   resultado_tabela = {
       "time_casa": time_casa,
       "placar_casa": placar_casa,
@@ -247,8 +234,6 @@ def salvar_rodada_original(rodada_original):
           )
   print(f'Rodada criada!')
 
-
-
 def setar_rodadaAtual_rodadaFinal(rodada_atual, rodada_final):
   '''
     Retorna todos os dados dos usuarios atualizado para rodada atual e rodada final.
@@ -265,16 +250,12 @@ def setar_rodadaAtual_rodadaFinal(rodada_atual, rodada_final):
         partida.partida_final = rodada_final
         partida.save()
 
-
 def zerar_palpites_usuarios(rodada):
-
   palpites = Palpite.objects.filter(rodada_atual=rodada)
-
   for palpite in palpites:
     palpite.finalizado = False
     palpite.tipo_class = 'none'
     palpite.save()
-
 
 def remover_repetidos(lista):
     nova_lista = []
@@ -283,7 +264,6 @@ def remover_repetidos(lista):
             nova_lista.append(elemento)
     nova_lista.sort()
     return nova_lista
-
 
 def enviar_email(email):
   destinatario = email

@@ -197,39 +197,29 @@ def configuracoes(request):
 
         if apagar_rodada:
             RodadaOriginal.objects.filter(rodada_atual=apagar_rodada).delete()
-
         if resetar_pontuacao_usuario_normal:
             thread = threading.Thread(target=resetar_pontuacao_usuarios_normal())
             thread.start()
-
-
         # Desbloquear e Bloquear as partidas dos usuario que estão no modo Normal
         if bloquear_partidas_normal:
             bloquear = Verificacao.objects.all()
             for partida in bloquear:
                 partida.verificado = True
                 partida.save()
-
         if desbloquear_partidas_normal:
             bloquear = Verificacao.objects.all()
             for partida in bloquear:
                 partida.verificado = False
                 partida.save()
-
-
         if criar_rodadas:
             if Rodada.objects.exists():
                 messages.error(request, 'Rodadas campeonato já foram criadas!')
                 return redirect('configuracoes')
             else:
                 criar_rodadas_campeonato_tasks.delay()
-
                 print("Rodadas Criadas com sucesso!")
-
         else:
             print("Checkbox desativo")
-
-
         # Pegando a rodada inicial, final e qual o tipo da aposta do usuario para desbloquear as partidas
         if rodada_inicial and rodada_final:
             if int(rodada_inicial) >= int(rodada_final) or int(rodada_final) > 39:
@@ -241,26 +231,20 @@ def configuracoes(request):
         else:
             messages.error(request, 'Campos rodadas vazios!')
             return redirect('configuracoes')
-
     return render(request,'configuracoes.html')
-
 
 def perfil(request):
     user = request.user
     usuarios = Usuario.objects.filter(usuario=user)
-
     if request.method == 'POST':
         dados = request.POST.dict()
-
         try:
             img = request.FILES['img']
         except KeyError:
             img = 'imagens/perfil-null.png'
-
         for usuario in usuarios:
             usuario.avatar = img
             usuario.save()
-
     context = {"usuarios":usuarios}
     return render(request, 'perfil.html', context)
 
@@ -275,17 +259,14 @@ def pagamento_bolao(request):
         pagamento,criado = Pagamento.objects.get_or_create(participante=user,id_pagamento=id_pagamento)
         pagamento.save()
         return redirect(link_pagamento)
-
     context = {"usuario":usuario, "bloquear":bloquear}
     return render(request, "pagamento_bolao.html", context)
 
 
 def finalizar_pagamento(request):
     user = request.user
-    print("Finalizar pagamento")
     dados = request.GET.dict()
     status = dados.get("status")
-    print(dados)
     id_pagamento = dados.get("preference_id")
     if status == "approved":
         pagamento = Pagamento.objects.get(participante=user,id_pagamento=id_pagamento)
@@ -314,6 +295,7 @@ def finalizar_pagamento(request):
     else:
         print("Fim do pagamento")
     return redirect("homepage")
+
 def login_bolao(request):
     if request.user.is_authenticated:
         return redirect('homepage')
