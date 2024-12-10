@@ -15,6 +15,13 @@ class Usuario(models.Model):
     def __str__(self):
         return f"{self.nome}"
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user}"
+
 class Classificacao(models.Model):
     usuario = models.OneToOneField(Usuario, null=True, blank=True, on_delete=models.CASCADE)
     pontos = models.IntegerField(default=0)

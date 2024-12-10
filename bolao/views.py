@@ -1,5 +1,5 @@
 import threading
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
@@ -63,8 +63,11 @@ def palpites(request):
             # data = get_api_data(verificacao_partida.partida_atual)
             dados = request.POST
             resultados_form = dict(dados)
-
-
+            rodada_verificacao = resultados_form["rodada_atual"][0]
+            # Verificar se já existe a rodada
+            if Palpite.objects.filter(rodada_atual=rodada_verificacao).exists():
+                messages.error(request, f'Rodada {rodada_verificacao} já foi salva.')
+                return redirect('palpites')
             #salvando os resultados dos times e rodadas no banco de dados
             if resultados_form["resultado_casa"] and resultados_form["resultado_visitante"]:
                 for resultado_visitante in resultados_form["resultado_visitante"]:

@@ -4,9 +4,6 @@ from decouple import config
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
 from .jazzmin import JAZZMIN_SETTINGS
-import boto3
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 import logging
 
 
@@ -87,7 +84,7 @@ CSRF_COOKIE_SECURE = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

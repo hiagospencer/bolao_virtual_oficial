@@ -14,8 +14,6 @@ class ClassificacaoAdmin(admin.ModelAdmin):
     list_filter = ["usuario", "pontos",]
     search_fields = ("usuario",)
 
-
-
 class PalpiteAdmin(admin.ModelAdmin):
     model = Palpite
     list_display = ["usuario","rodada_atual","time_casa", "placar_casa", "placar_visitante", "time_visitante", "vencedor","placar_exato","vitorias", "finalizado", "tipo_class"]
@@ -56,4 +54,5 @@ admin.site.register(RodadaOriginal, RodadaOriginalAdmin)
 admin.site.register(Rodada, RodadaAdmin)
 admin.site.register(Verificacao, VerificacaoAdmin)
 admin.site.register(BloquearPartida)
+admin.site.register(Profile)
 admin.site.register(Pagamento, PagamentoAdmin)
