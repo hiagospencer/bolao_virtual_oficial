@@ -6,9 +6,7 @@ from dotenv import load_dotenv
 from .jazzmin import JAZZMIN_SETTINGS
 import logging
 
-
 logging.basicConfig(level=logging.DEBUG)
-boto3.set_stream_logger('botocore', level='DEBUG')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,24 +39,6 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        # Logger principal da AWS (boto3 e django-storages)
-        'botocore': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Pode ser alterado para INFO, WARNING, etc.
-            'propagate': False,
-        },
-        'boto3': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'storages': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
         },
     },
 }
