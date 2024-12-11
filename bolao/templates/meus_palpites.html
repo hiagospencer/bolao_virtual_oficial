@@ -13,7 +13,7 @@
         {% for jogo in posts %}
         <div class="rodada {{ jogo.tipo_class}}">
             <div class="time_casa">
-                <img src="{{ jogo.imagem_casa }}" alt="{{ jogo.time_casa }}">
+                <img src="{{ jogo.imagem_casa.url }}" alt="{{ jogo.time_casa }}">
                 <span>{{ jogo.time_casa }}</span>
                 <input type="hidden" name="{{ jogo.time_casa }}" value="{{ jogo.time_casa }}" />
             </div><!--tim_casa-->
@@ -30,7 +30,7 @@
             </div><!--Rodada-->
 
             <div class="time_visitante">
-                <img src="{{ jogo.imagem_fora }}" alt="{{ jogo.time_visitante }}">
+                <img src="{{ jogo.imagem_fora.url }}" alt="{{ jogo.time_visitante }}">
                 <span>{{ jogo.time_visitante }}</span>
                 <input type="hidden" name="{{ jogo.time_visitante }}" value="{{ jogo.time_visitante }}" />
             </div><!--Time_visitante-->

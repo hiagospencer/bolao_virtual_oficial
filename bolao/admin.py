@@ -2,9 +2,11 @@ from django.contrib import admin
 
 from .models import *
 
+
 class UsuarioAdmin(admin.ModelAdmin):
     model = Usuario
     list_display = ["usuario", "email", "whatsapp", "pagamento"]
+    list_editable = ("pagamento",)
     list_per_page = 30
     search_fields = ["usuario", "tipo_aposta", "pagamento"]
 
@@ -25,6 +27,7 @@ class RodadaOriginalAdmin(admin.ModelAdmin):
     model = RodadaOriginal
     list_display = ["rodada_atual","time_casa", "placar_casa", "placar_visitante",  "time_visitante", "vencedor", "finalizado"]
     list_filter = ["rodada_atual"]
+    list_editable = ("placar_casa", "placar_visitante", "vencedor",)
     list_per_page = 10
     search_fields = ("usuario", "rodada_atual")
 
@@ -38,6 +41,7 @@ class RodadaAdmin(admin.ModelAdmin):
 class VerificacaoAdmin(admin.ModelAdmin):
     model = Verificacao
     list_display = ["user","verificado", "partida_atual", "partida_final"]
+    list_editable = ("verificado", "partida_atual", "partida_final",)
     list_filter = ["user"]
     search_fields = ("user",)
 

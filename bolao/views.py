@@ -65,7 +65,7 @@ def palpites(request):
             resultados_form = dict(dados)
             rodada_verificacao = resultados_form["rodada_atual"][0]
             # Verificar se já existe a rodada
-            if Palpite.objects.filter(rodada_atual=rodada_verificacao).exists():
+            if Palpite.objects.filter(rodada_atual=rodada_verificacao,usuario=user).exists():
                 messages.error(request, f'Rodada {rodada_verificacao} já foi salva.')
                 return redirect('palpites')
             #salvando os resultados dos times e rodadas no banco de dados

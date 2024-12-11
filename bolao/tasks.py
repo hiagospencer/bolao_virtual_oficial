@@ -101,3 +101,5 @@ def calcular_pontuacao_usuario_tasks(rodada_atualizada):
           continue
   except:
     print('tabela pontuação não encontrada')
+
+  print("Classificação atualizada")
