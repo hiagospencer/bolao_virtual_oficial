@@ -174,25 +174,23 @@ def configuracoes(request):
 
         # Atualizar classificação normal passando o número da rodada e o tipo_aposta do usuário
         if rodada_atualizada_normal:
-            classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+            # classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
             # thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal))
             # thread.start()
 
             calcular_pontuacao_usuario_tasks.delay(rodada_atualizada_normal)
 
-            for index, item in enumerate(classificacao, start=1):
-
-                # Salva a posição anterior
-                item.posicao_anterior = item.posicao_atual
-                # Atualiza a posição atual
-                item.posicao_atual = index
-                # Calcula a variação de posição (subiu ou desceu)
-                if item.posicao_anterior is not None:
-                    item.posicao_variacao = item.posicao_anterior - item.posicao_atual
-                else:
-                    item.posicao_variacao = 0  # Nenhuma variação se não há posição anterior
-                item.save()
-
+            # for index, item in enumerate(classificacao, start=1):
+            #     # Salva a posição anterior
+            #     item.posicao_anterior = item.posicao_atual
+            #     # Atualiza a posição atual
+            #     item.posicao_atual = index
+            #     # Calcula a variação de posição (subiu ou desceu)
+            #     if item.posicao_anterior is not None:
+            #         item.posicao_variacao = item.posicao_anterior - item.posicao_atual
+            #     else:
+            #         item.posicao_variacao = 0  # Nenhuma variação se não há posição anterior
+            #     item.save()
 
         if rodada_original:
             thread = threading.Thread(target=salvar_rodada_original(rodada_original))

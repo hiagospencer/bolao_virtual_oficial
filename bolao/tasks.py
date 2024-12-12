@@ -99,6 +99,18 @@ def calcular_pontuacao_usuario_tasks(rodada_atualizada):
           pontuacao_usuario.save()
         except :
           continue
+    classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
+    for index, item in enumerate(classificacao, start=1):
+      # Salva a posição anterior
+      item.posicao_anterior = item.posicao_atual
+      # Atualiza a posição atual
+      item.posicao_atual = index
+      # Calcula a variação de posição (subiu ou desceu)
+      if item.posicao_anterior is not None:
+        item.posicao_variacao = item.posicao_anterior - item.posicao_atual
+      else:
+        item.posicao_variacao = 0  # Nenhuma variação se não há posição anterior
+      item.save()
   except:
     print('tabela pontuação não encontrada')
 
