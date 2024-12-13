@@ -34,7 +34,6 @@ def homepage(request):
 
 
 def palpites(request):
-
     if request.user.is_authenticated:
         user = request.user
         time_casa = []
@@ -46,8 +45,6 @@ def palpites(request):
         img_visitante = []
         verificacao_partida, criado = Verificacao.objects.get_or_create(user=user)
         rodadas = Rodada.objects.filter(rodada_atual=verificacao_partida.partida_atual )
-        # calcular_pontuacao(user)
-
         if verificacao_partida.partida_atual == verificacao_partida.partida_final:
             verificacao_partida.verificado = True
             verificacao_partida.save()
@@ -79,7 +76,6 @@ def palpites(request):
                 for rodada in resultados_form["rodada_atual"]:
                     rodada_dict.append(rodada)
 
-
             resultado_tabela = {
                     "time_casa": time_casa,
                     "img_casa": img_casa,
@@ -89,7 +85,6 @@ def palpites(request):
                     "img_visitante": img_visitante,
                     "rodada_atual": rodada_dict
             }
-
 
             df_tabela = pd.DataFrame(resultado_tabela)
                 # Iterar sobre o DataFrame e criar instâncias do modelo Rodada1
@@ -109,14 +104,11 @@ def palpites(request):
             messages.error(request, f'{verificacao_partida.partida_atual}ª rodada salva com sucesso')
             verificacao_partida.partida_atual += 1
             verificacao_partida.save()
-
             return redirect('palpites')
-
         context = {"rodadas":rodadas, 'verificacao_partida':verificacao_partida.verificado}
         return render(request,'palpites.html', context)
     else:
         return redirect('login_bolao')
-
 
 def meus_palpites(request):
     if request.user.is_authenticated:
@@ -177,20 +169,7 @@ def configuracoes(request):
             # classificacao = Classificacao.objects.filter(usuario__pagamento=True).order_by('-pontos', '-placar_exato', '-vitorias', '-empates')
             # thread = threading.Thread(target=calcular_pontuacao_usuario(rodada_atualizada_normal))
             # thread.start()
-
             calcular_pontuacao_usuario_tasks.delay(rodada_atualizada_normal)
-
-            # for index, item in enumerate(classificacao, start=1):
-            #     # Salva a posição anterior
-            #     item.posicao_anterior = item.posicao_atual
-            #     # Atualiza a posição atual
-            #     item.posicao_atual = index
-            #     # Calcula a variação de posição (subiu ou desceu)
-            #     if item.posicao_anterior is not None:
-            #         item.posicao_variacao = item.posicao_anterior - item.posicao_atual
-            #     else:
-            #         item.posicao_variacao = 0  # Nenhuma variação se não há posição anterior
-            #     item.save()
 
         if rodada_original:
             thread = threading.Thread(target=salvar_rodada_original(rodada_original))
@@ -263,7 +242,6 @@ def pagamento_bolao(request):
     context = {"usuario":usuario, "bloquear":bloquear}
     return render(request, "pagamento_bolao.html", context)
 
-
 def finalizar_pagamento(request):
     user = request.user
     dados = request.GET.dict()
@@ -313,22 +291,16 @@ def login_bolao(request):
             return redirect('login_bolao')
     return render(request,'autenticacao/login_bolao.html')
 
-
-
 def cadastro(request):
-
     if request.method == 'POST':
         nome_form = request.POST.get('nome')
         nome = nome_form.strip()
-
         email = request.POST.get('email')
         whatsapp = request.POST.get('whatsapp')
         senha_form = request.POST.get('senha')
         senha = senha_form.strip()
-
         confirme_senha_form = request.POST.get('confirme_senha')
         confirme_senha = confirme_senha_form.strip()
-
 
         if Usuario.objects.filter(nome=nome).exists():
             messages.error(request, 'Já existe um usuário cadastrado com esse nome.')
@@ -353,10 +325,8 @@ def cadastro(request):
         try:
             # Criar o usuário do Django
             user = User.objects.create_user(username=nome, email=email, password=senha)
-
             # Criar o objeto Usuario e associar o campo 'usuario' com o usuário logado
             usuario = Usuario.objects.create(usuario=user,nome=nome,email=email, whatsapp=whatsapp)
-
             # Criar o objeto Classificacao e associar ao Usuario criado
             classificacao = Classificacao.objects.create(usuario=usuario)
             destinatario = 'hiaguinhospencer@gmail.com'
@@ -372,11 +342,8 @@ def cadastro(request):
             return redirect('homepage')
         except Exception as e:
             return HttpResponse(f"Erro ao criar o usuário: {str(e)}", status=500)
-
           # Redireciona para a página inicial
-
     return render(request,'autenticacao/cadastro.html')
-
 
 def fazer_logout(request):
     logout(request)
