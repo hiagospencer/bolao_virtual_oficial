@@ -302,6 +302,11 @@ def cadastro(request):
         confirme_senha_form = request.POST.get('confirme_senha')
         confirme_senha = confirme_senha_form.strip()
 
+        if " " in nome or len(nome) > 15:
+            messages.error(request, '''O nome do usuário não pode conter espaços ou
+                            o nome do usuário deve ter no máximo 15 caracteres. ''')
+            return redirect('cadastro')
+
         if Usuario.objects.filter(nome=nome).exists():
             messages.error(request, 'Já existe um usuário cadastrado com esse nome.')
             return redirect('cadastro')

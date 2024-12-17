@@ -37,11 +37,11 @@
             <form  method="POST">
                 {% csrf_token %}
                 <div class="email">
-                    <input type="text" placeholder="Usuário" name="nome">
+                    <input type="text" placeholder="Usuário" name="nome" required>
                 </div><br>
 
                 <div class="email">
-                    <input type="email" placeholder="E-mail" name="email" />
+                    <input type="email" placeholder="E-mail" name="email" required/>
                 </div>
 
                 <div class="telefone">
