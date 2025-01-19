@@ -121,5 +121,5 @@ Este projeto está licenciado sob os termos da [MIT License](LICENSE).
 
 ## Contato
 
-Em caso de dúvidas, entre em contato pelo e-mail: [contato@bolaooficial.com](mailto\:contato@bolaooficial.com).
+Em caso de dúvidas, entre em contato pelo e-mail: [hiagosouzadev10@gmail.com](mailto\:hiagosouzadev10@gmail.com).
 
